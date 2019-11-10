@@ -1,0 +1,13 @@
+
+int a;
+double b;
+
+void main() {
+    int a;
+    double b;
+	a = 123;
+	write 2*(a+2);
+	b = 1.1;
+	write b+2.2;
+}
+

@@ -1,0 +1,7 @@
+void main(int num) {
+     int a;
+     double b;
+     read a;
+     b = (double)a + b*2.2;
+     write b;
+ }

@@ -1,0 +1,8 @@
+void main(){
+  int i;
+  int j;
+  char ch;
+
+  ch = '\123';
+}
+
