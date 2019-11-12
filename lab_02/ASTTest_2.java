@@ -9,8 +9,8 @@
 //import ast.*;
 //import ast.definitions.ArrayDefinition;
 //import ast.definitions.Definition;
-//import ast.definitions.FuncDefinition;
-//import ast.definitions.VarDefinition;
+//import ast.definitions.FunctionDefinition;
+//import ast.definitions.VariableDefinition;
 //import ast.expressions.Arithmetic;
 //import ast.expressions.Cast;
 //import ast.expressions.RealLiteral;
@@ -39,9 +39,9 @@
 //     */
 //    private static ASTNode createAST() {
 //        // * Line 2
-//        VarDefinition varDef1 = new VarDefinition(2, 3, "a", new IntType(2, 3));
+//        VariableDefinition varDef1 = new VariableDefinition(2, 3, "a", new IntType(2, 3));
 //        // * Line 3
-//        VarDefinition varDef2 = new VarDefinition(3, 3, "b", new RealType(2, 3));
+//        VariableDefinition varDef2 = new VariableDefinition(3, 3, "b", new RealType(2, 3));
 //        // * Line 4
 //        ArrayType arrType1 = new ArrayType(new IntType(1, 1), 10);
 //        ArrayDefinition arrDef1 = new ArrayDefinition(4, 3, "i", arrType1);
@@ -64,9 +64,9 @@
 //        // * Line 6
 //        Write write = new Write(6, 3, new Variable(6, 9, "b"));
 //        // * We build and return the AST
-//        FunctionType mainType = new FunctionType(1, 1, new VoidType(1, 1), new ArrayList<VarDefinition>());
+//        FunctionType mainType = new FunctionType(1, 1, new VoidType(1, 1), new ArrayList<VariableDefinition>());
 //        ArrayList<Statement> mainBody = new ArrayList<Statement>(Arrays.asList(varDef1, varDef2, arrDef1, arrDef2, read, assignment, write));
-//        FuncDefinition funcDefinition = new FuncDefinition(1, 1, "main", mainType, mainBody);
+//        FunctionDefinition funcDefinition = new FunctionDefinition(1, 1, "main", mainType, mainBody);
 //        return new Program(1, 1, new ArrayList<Definition>(Arrays.asList(funcDefinition)), new ArrayList<Statement>());
 //        //return new Program(1, 1, new ArrayList<Definition>(), new ArrayList<>());
 //    }

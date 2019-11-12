@@ -9,14 +9,14 @@ package ast.definitions;
 import ast.statements.Statement;
 import types.Type;
 
-public class VarDefinition extends AbstractDefinition implements Statement {
+public class VariableDefinition extends AbstractDefinition implements Statement {
 
     /**
      * The offset of the variable
      */
     private int offset;
 
-    public VarDefinition(int line, int column, String name, Type type) {
+    public VariableDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);
     }
 

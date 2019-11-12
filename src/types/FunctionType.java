@@ -1,5 +1,9 @@
 package types;
 
+import ast.definitions.Definition;
+
+import java.util.ArrayList;
+
 /**
  * Author: David Walshe
  * Date: 05/10/2019
@@ -10,20 +14,31 @@ package types;
 
 public class FunctionType extends AbstractType {
 
-    private Type type;
+    private Type returnType;
+    private ArrayList<Definition> parameters;
 
-    public FunctionType(int line, int column, Type type) {
+    public FunctionType(int line, int column, Type returnType, ArrayList<Definition> parameters) {
         super(line, column);
-        this.type = type;
+        this.returnType = returnType;
+        this.parameters = parameters;
     }
 
     public Type getType() {
-        return type;
+        return this;
+    }
+
+    public Type getReturnType() {
+        return this.returnType;
+    }
+
+    public ArrayList<Definition> getParameters() {
+        return parameters;
     }
 
     @Override
     public String toString() {
-        return this.getType() + "";
+        return "Return Type: " + this.getReturnType() + "\n" +
+                "Parameters:  " + this.getParameters();
     }
 
 }

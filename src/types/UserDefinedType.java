@@ -10,14 +10,14 @@ package types;
 
 public class UserDefinedType extends AbstractType {
 
-    private Type type;
+    private String type;
 
-    public UserDefinedType(int line, int column, Type type) {
+    public UserDefinedType(int line, int column, String type) {
         super(line, column);
         this.type = type;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 

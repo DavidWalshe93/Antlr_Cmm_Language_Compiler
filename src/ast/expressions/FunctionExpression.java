@@ -13,13 +13,13 @@ import java.util.ArrayList;
  * College: Cork Institute of Technology
  */
 
-public class FuncExpression extends AbstractExpression implements Statement {
+public class FunctionExpression extends AbstractExpression implements Statement {
 
-    private String name;
+    private Variable name;
     private ArrayList<Expression> parameters;
     private Definition definition;
 
-    public FuncExpression(int line, int column, String name, ArrayList<Expression> parameters) {
+    public FunctionExpression(int line, int column, Variable name, ArrayList<Expression> parameters) {
         super(line, column);
         this.name = name;
         this.parameters = parameters;
@@ -33,7 +33,7 @@ public class FuncExpression extends AbstractExpression implements Statement {
         this.definition = definition;
     }
 
-    public String getName() {
+    public Variable getName() {
         return name;
     }
 

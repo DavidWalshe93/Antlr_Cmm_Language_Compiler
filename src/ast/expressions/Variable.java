@@ -6,12 +6,12 @@
 
 package ast.expressions;
 
-import ast.definitions.VarDefinition;
+import ast.definitions.VariableDefinition;
 
 public class Variable extends AbstractExpression {
 
     private String name;
-    private VarDefinition definition;
+    private VariableDefinition definition;
 
     public Variable(int line, int column, String name) {
         super(line, column);
@@ -23,11 +23,11 @@ public class Variable extends AbstractExpression {
         return name;
     }
 
-    public VarDefinition getDefinition() {
+    public VariableDefinition getDefinition() {
         return definition;
     }
 
-    public void setDefinition(VarDefinition definition) {
+    public void setDefinition(VariableDefinition definition) {
         this.definition = definition;
     }
 

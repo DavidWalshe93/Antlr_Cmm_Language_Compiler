@@ -13,15 +13,20 @@ import types.Type;
 public class Cast extends AbstractExpression {
 
     private Expression expression;
+    private Type castType;
 
     public Cast(int line, int column, Type type, Expression expression) {
         super(line, column);
-        this.setType(type);
+        this.castType = type;
         this.expression = expression;
+    }
+
+    public Type getCastType() {
+        return castType;
     }
 
     @Override
     public String toString() {
-        return String.format("(%s)%s", this.getType(), this.expression);
+        return String.format("(%s)%s", this.getCastType(), this.expression);
     }
 }

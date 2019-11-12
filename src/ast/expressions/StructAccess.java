@@ -10,25 +10,25 @@ package ast.expressions;
 
 public class StructAccess extends AbstractExpression {
 
-    private Expression parentNode;
-    private Expression childNode;
+    private Expression record;
+    private String fieldName;
 
-    public StructAccess(int line, int column, Expression parentNode, Expression childNode) {
+    public StructAccess(int line, int column, Expression record, String fieldName) {
         super(line, column);
-        this.parentNode = parentNode;
-        this.childNode = childNode;
+        this.record = record;
+        this.fieldName = fieldName;
     }
 
-    public Expression getParentNode() {
-        return parentNode;
+    public Expression getRecord() {
+        return record;
     }
 
-    public Expression getChildNode() {
-        return childNode;
+    public String getFieldName() {
+        return fieldName;
     }
 
     @Override
     public String toString() {
-        return this.getParentNode().toString() + "." + this.getChildNode().toString();
+        return this.getRecord().toString() + "." + this.getFieldName();
     }
 }

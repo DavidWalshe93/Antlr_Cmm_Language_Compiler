@@ -13,18 +13,18 @@ import java.util.HashMap;
  * College: Cork Institute of Technology
  */
 
-public class TypedefDefinition extends AbstractDefinition {
+public class TypeDefinition extends AbstractDefinition {
 
     static private HashMap<String, Type> typedefs = new HashMap<>();
 
     private StructDefinition structDefinition;
 
-    public TypedefDefinition(int line, int column, String name, Type type) {
+    public TypeDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);
         typedefs.put(name, type);
     }
 
-    public TypedefDefinition(StructDefinition structDefinition) {
+    public TypeDefinition(StructDefinition structDefinition) {
         super(structDefinition.getLine(), structDefinition.getColumn(), structDefinition.getName(), structDefinition.getType());
         this.structDefinition = structDefinition;
         typedefs.put(this.getName(), this.getType());

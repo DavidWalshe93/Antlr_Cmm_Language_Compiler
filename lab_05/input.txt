@@ -1,8 +1,17 @@
-void main(){
-  int i;
-  int j;
-  char ch;
 
-  ch = '\123';
+typedef int myInt, myInteger;
+typedef char myChar, myCharacter, myLetter;
+typedef double myDouble, myFloat;
+
+type myInt myInt123;
+type myDouble myDouble123;
+type myChar myChar123;
+
+
+void main(){
+  y();
+  z(10);
+  p(x, y, z);
+
 }
 
