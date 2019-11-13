@@ -14,5 +14,7 @@ public interface ASTNode {
     int getLine();
 
     int getColumn();
+
+//    public abstract <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
 }
 

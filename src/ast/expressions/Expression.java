@@ -19,4 +19,7 @@ public interface Expression extends ASTNode {
     Type getType();
 
     void setType(Type type);
+
+//    public abstract <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
+
 }
