@@ -1,5 +1,7 @@
 package ast.statements;
 
+import visitor.Visitor;
+
 import java.util.ArrayList;
 
 /**
@@ -19,5 +21,10 @@ public class Else extends Conditional implements Statement {
     @Override
     public String toString() {
         return "else{" + this.getStatementsAsString() + "}\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

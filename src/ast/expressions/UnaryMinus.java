@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Author: David Walshe
  * Date: 08/10/2019
@@ -20,5 +22,10 @@ public class UnaryMinus extends AbstractExpression {
     @Override
     public String toString() {
         return "-" + expression;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

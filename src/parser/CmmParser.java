@@ -185,13 +185,19 @@ public class CmmParser extends Parser {
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
             new PredictionContextCache();
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
     private static final String[] _LITERAL_NAMES = {
             null, "','", "';'", "'int'", "'double'", "'char'", "'['", "']'", "'type'",
             "'{'", "'}'", "'if'", "'else'", "'while'", "'('", "')'", "'write'", "'read'",
             "'return'", "'='", "'.'", "'-'", "'*'", "'/'", "'%'", "'+'", "'>'", "'>='",
             "'<'", "'<='", "'!='", "'=='", "'&&'", "'||'", "'!'", "'void'", "'typedef'",
             "'struct'"
+    };
+    private static final String[] _SYMBOLIC_NAMES = {
+            null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, "WS", "COMMENT", "CHAR_CONSTANT", "INT_CONSTANT", "REAL_CONSTANT",
+            "ID"
     };
 	static {
 		tokenNames = new String[_SYMBOLIC_NAMES.length];
@@ -219,13 +225,7 @@ public class CmmParser extends Parser {
 		return VOCABULARY;
 	}
 
-    private static final String[] _SYMBOLIC_NAMES = {
-            null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, "WS", "COMMENT", "CHAR_CONSTANT", "INT_CONSTANT", "REAL_CONSTANT",
-            "ID"
-    };
+    public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
     static {
         RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION);
@@ -421,6 +421,10 @@ public class CmmParser extends Parser {
 		return _localctx;
 	}
 
+    public final TypeContext type() throws RecognitionException {
+        return type(0);
+    }
+
 	private TypeContext type(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
@@ -539,10 +543,6 @@ public class CmmParser extends Parser {
 		}
 		return _localctx;
 	}
-
-    public final TypeContext type() throws RecognitionException {
-        return type(0);
-    }
 
 	public final Variable_definition_blockContext variable_definition_block() throws RecognitionException {
 		Variable_definition_blockContext _localctx = new Variable_definition_blockContext(_ctx, getState());
@@ -1028,6 +1028,10 @@ public class CmmParser extends Parser {
 		}
 		return _localctx;
 	}
+
+    public final ExpressionContext expression() throws RecognitionException {
+        return expression(0);
+    }
 
 	private ExpressionContext expression(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
@@ -1705,10 +1709,6 @@ public class CmmParser extends Parser {
             return RULE_variable_definition_block;
         }
     }
-
-    public final ExpressionContext expression() throws RecognitionException {
-        return expression(0);
-	}
 
 	public static class BlockContext extends ParserRuleContext {
 		public ArrayList<Statement> ast = new ArrayList<Statement>();

@@ -1,6 +1,7 @@
 package ast.definitions;
 
 import types.Type;
+import visitor.Visitor;
 
 /**
  * Author: David Walshe
@@ -19,5 +20,10 @@ public class TypeDefinition extends AbstractDefinition {
     @Override
     public String toString() {
         return "typedef " + getType() + " " + getName() + ";\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

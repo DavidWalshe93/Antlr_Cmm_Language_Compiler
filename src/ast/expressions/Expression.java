@@ -9,6 +9,7 @@ package ast.expressions;
 
 import ast.ASTNode;
 import types.Type;
+import visitor.Visitor;
 
 
 public interface Expression extends ASTNode {
@@ -20,6 +21,6 @@ public interface Expression extends ASTNode {
 
     void setType(Type type);
 
-//    public abstract <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
+    <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
 
 }

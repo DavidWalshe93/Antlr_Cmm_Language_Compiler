@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,11 @@ public class While extends Conditional implements Statement {
     @Override
     public String toString() {
         return "while(" + this.getCondition() + ") {" + this.getStatementsAsString() + "}\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

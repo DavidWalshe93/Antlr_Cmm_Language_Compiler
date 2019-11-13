@@ -2,6 +2,7 @@ package ast.statements;
 
 import ast.AbstractASTNode;
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 /**
  * Author: David Walshe
@@ -27,5 +28,10 @@ public class Return extends AbstractASTNode implements Statement {
     @Override
     public String toString() {
         return "return " + getExpression() + ";\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

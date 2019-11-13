@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -21,5 +22,10 @@ public class If extends Conditional implements Statement {
     @Override
     public String toString() {
         return "if(" + this.getCondition().toString() + ") {" + this.getStatementsAsString() + "}";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

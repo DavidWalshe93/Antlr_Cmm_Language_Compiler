@@ -6,6 +6,8 @@
 
 package types;
 
+import visitor.Visitor;
+
 public class RealType extends AbstractType {
 
     private static RealType instance = new RealType();
@@ -25,6 +27,11 @@ public class RealType extends AbstractType {
     @Override
     public String toString() {
         return "double";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

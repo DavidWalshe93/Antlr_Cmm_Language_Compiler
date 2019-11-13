@@ -2,6 +2,7 @@ package ast.definitions;
 
 import ast.statements.Statement;
 import types.StructType;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -23,5 +24,10 @@ public class StructDefinition extends AbstractDefinition {
     @Override
     public String toString() {
         return "typedef struct" + " {" + this.getType() + "} " + this.getName() + ";\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

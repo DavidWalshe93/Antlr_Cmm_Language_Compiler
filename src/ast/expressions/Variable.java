@@ -7,6 +7,7 @@
 package ast.expressions;
 
 import ast.definitions.VariableDefinition;
+import visitor.Visitor;
 
 public class Variable extends AbstractExpression {
 
@@ -36,5 +37,9 @@ public class Variable extends AbstractExpression {
         return name;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 
 }

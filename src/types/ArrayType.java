@@ -1,5 +1,7 @@
 package types;
 
+import visitor.Visitor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,13 +45,16 @@ public class ArrayType extends AbstractType {
     public String toString() {
         if (this.getType() instanceof ArrayType) {
             String arrayString = this.getType() + "";
-            String[] splitArrayString = arrayString.split("\\[");
-            splitArrayString = arrayString.split("\\[", -1);
+            String[] splitArrayString = arrayString.split("\\[", -1);
 
-//            splitArrayString
-            return splitArrayString[0] + "[" + this.getArraySize() + "]" + "[" + String.join("[", Arrays.copyOfRange(splitArrayString, 1, splitArrayString.length));   // [int fibonacci;]
+            return splitArrayString[0] + "[" + this.getArraySize() + "]" + "[" + String.join("[", Arrays.copyOfRange(splitArrayString, 1, splitArrayString.length));
         } else
             return this.getType() + "[" + this.getArraySize() + "]";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

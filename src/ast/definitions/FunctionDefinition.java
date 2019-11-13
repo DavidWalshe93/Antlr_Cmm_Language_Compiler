@@ -3,6 +3,7 @@ package ast.definitions;
 import ast.statements.Statement;
 import types.FunctionType;
 import types.Type;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,11 @@ public class FunctionDefinition extends AbstractDefinition {
         FunctionType type = (FunctionType) this.getType();
         return String.format("%s %s(%s) {%s}\n", type.getReturnType(), this.getName(),
                 this.getParametersAsString(type.getParameters()), this.getStatementsAsString());
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

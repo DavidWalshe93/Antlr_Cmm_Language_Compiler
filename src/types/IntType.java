@@ -6,6 +6,8 @@
 
 package types;
 
+import visitor.Visitor;
+
 public class IntType extends AbstractType {
 
     private static IntType instance = new IntType();
@@ -25,6 +27,11 @@ public class IntType extends AbstractType {
     @Override
     public String toString() {
         return "int";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

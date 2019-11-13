@@ -8,6 +8,7 @@ package ast.statements;
 
 import ast.AbstractASTNode;
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 public class Assignment extends AbstractASTNode implements Statement {
 
@@ -31,6 +32,11 @@ public class Assignment extends AbstractASTNode implements Statement {
     @Override
     public String toString() {
         return "" + leftHandSide + " = " + rightHandSide;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

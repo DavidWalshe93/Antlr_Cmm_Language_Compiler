@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Author: David Walshe
  * Date: 21/10/2019
@@ -12,6 +14,11 @@ public class Logic extends AbstractBinaryExpression {
 
     public Logic(int line, int column, Expression operand1, String operator, Expression operand2) {
         super(line, column, operand1, operator, operand2);
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

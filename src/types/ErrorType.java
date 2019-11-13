@@ -11,6 +11,7 @@ package types;
 
 import ast.ASTNode;
 import errorhandler.ErrorHandler;
+import visitor.Visitor;
 
 public class ErrorType extends AbstractType {
 
@@ -26,6 +27,11 @@ public class ErrorType extends AbstractType {
     public String toString() {
         return String.format("Type error in line %d and column %d: %s.",
                 this.getLine(), this.getColumn(), this.message);
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

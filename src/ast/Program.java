@@ -8,6 +8,7 @@
 package ast;
 
 import ast.definitions.Definition;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class Program extends AbstractASTNode {
     public String toString() {
         return String.format("Program with %d definitions",
                 this.definitions.size());
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

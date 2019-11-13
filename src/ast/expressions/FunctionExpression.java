@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.definitions.Definition;
 import ast.statements.Statement;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -55,5 +56,10 @@ public class FunctionExpression extends AbstractExpression implements Statement 
     @Override
     public String toString() {
         return getName() + "(" + this.getParametersAsString() + ");\n";
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

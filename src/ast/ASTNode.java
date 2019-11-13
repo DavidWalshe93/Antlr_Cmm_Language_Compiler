@@ -7,6 +7,8 @@
 
 package ast;
 
+import visitor.Visitor;
+
 public interface ASTNode {
     /**
      * Number of line and column where the node appears in the source code
@@ -15,6 +17,6 @@ public interface ASTNode {
 
     int getColumn();
 
-//    public abstract <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
+    <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param);
 }
 

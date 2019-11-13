@@ -9,6 +9,7 @@ package ast.statements;
 
 import ast.AbstractASTNode;
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 public class Write extends AbstractASTNode implements Statement {
 
@@ -31,5 +32,9 @@ public class Write extends AbstractASTNode implements Statement {
         return "write " + expression + ";";
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 
 }

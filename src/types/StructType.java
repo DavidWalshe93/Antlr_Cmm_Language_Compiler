@@ -1,6 +1,7 @@
 package types;
 
 import ast.statements.Statement;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,11 @@ public class StructType extends AbstractType {
     @Override
     public String toString() {
         return getRecordFieldsAsString();
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }
