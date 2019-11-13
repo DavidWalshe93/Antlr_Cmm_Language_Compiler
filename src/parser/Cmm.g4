@@ -39,7 +39,6 @@ primative returns [Type ast]
     ;
 type returns [Type ast] locals [ArrayList<Integer> indexes = new ArrayList<>()]
     :   primative                      { $ast = $primative.ast; }
-    |   'struct'                       { $ast = StructType.getInstance(); }
     |   t=type ('[' c=INT_CONSTANT ']' { $indexes.add(LexerHelper.lexemeToInt($c.text)); })+ { $ast = ArrayType.createArray($t.ast, $indexes); }
     |   'type' id=ID                   { $ast = new UserDefinedType($id.getLine(), $id.getCharPositionInLine()+1, $id.text); }
     ;
@@ -66,7 +65,7 @@ statement returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     |   whs=while_statement         { $ast.add($whs.ast); }
     |   res=return_statement        { $ast.add($res.ast); }
     |   as=assignment_statement     { $ast.add($as.ast); }
-    |   fi=function_invocation      { $ast.add((Statement)$fi.ast); }
+    |   fi=function_invocation ';'  { $ast.add((Statement)$fi.ast); }
     ;
 if_statement returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     :   'if' cb1=condition_block            { $ast.add(new If($cb1.start.getLine(), $cb1.start.getCharPositionInLine()+1, $cb1.exp, $cb1.stmts));}
@@ -94,8 +93,8 @@ assignment_statement returns [Statement ast]
     :   e1=expression '=' e2=expression ';' { $ast = new Assignment($e1.start.getLine(), $e1.start.getCharPositionInLine()+1, $e1.ast, $e2.ast); }
     ;
 function_invocation returns [Expression ast]
-    :   id=ID args=argument_list ';'  { $ast = new FunctionExpression($id.getLine(), $id.getCharPositionInLine()+1,
-                                        new Variable($id.getLine(), $id.getCharPositionInLine()+1, $id.text), $args.args); }
+    :   id=ID args=argument_list   { $ast = new FunctionExpression($id.getLine(), $id.getCharPositionInLine()+1,
+                                     new Variable($id.getLine(), $id.getCharPositionInLine()+1, $id.text), $args.args); }
     ;
 argument_list returns [ArrayList<Expression> args = new ArrayList<Expression>()]
     :   '(' (e1=expression { $args.add($e1.ast); } (',' e2=expression { $args.add($e2.ast); })*)? ')'
@@ -143,32 +142,21 @@ return_type returns [Type ast]
 // TYPEDEF ===========================================================================================================//
 //====================================================================================================================//
 type_definition returns [ArrayList<Definition> ast = new ArrayList<Definition>()]
-    :   'typedef' t=type id1=ID   { $ast.add(new TypeDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $t.ast)); }
-        ( ',' id2=ID { $ast.add(new TypeDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $t.ast)); } )* ';'
-//        (   id1=ID                    { $ast.add(new TypeDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $t.ast)); }
-//            (',' id2=ID               { $ast.add(new TypeDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $t.ast)); } )* ';'
-//            |   (('[' c=INT_CONSTANT ']'  { $indexes.add(LexerHelper.lexemeToInt($c.text)); })+ id5=ID
-//                { $ast.add(new TypeDefinition($id5.getLine(), $id5.getCharPositionInLine()+1, $id5.text, ArrayType.createArray($t.ast, $indexes))); } ) ';'
-//        )
-//        |   'type' td=ID
-//        (   id3=ID                    { $ast.add(new TypeDefinition($id3.getLine(), $id3.getCharPositionInLine()+1, $id3.text, TypeDefinition.getTypedefType($td.text))); }
-//            (',' id4=ID               { $ast.add(new TypeDefinition($id4.getLine(), $id4.getCharPositionInLine()+1, $id4.text, TypeDefinition.getTypedefType($td.text))); } )* ';'
-//            | (('[' c=INT_CONSTANT ']'  { $indexes.add(LexerHelper.lexemeToInt($c.text)); })+ id6=ID
-//            { $ast.add(new TypeDefinition($id6.getLine(), $id6.getCharPositionInLine()+1, $id6.text, ArrayType.createArray(TypeDefinition.getTypedefType($td.text), $indexes))); } ) ';'
-//        )
-//        |   sd=struct_definition        { $ast.add(new TypeDefinition($sd.ast)); })
+    :   'typedef' ( td=typedef_definition  { $ast.addAll( $td.ast ); }
+                  | sd=struct_definition   { $ast.add( $sd.ast ); }
+                  ) ';'
     ;
-
-
-    // TypeDefinition.getTypedefType($td.text))
+typedef_definition returns [ArrayList<Definition> ast = new ArrayList<Definition>()]
+    :   t=type id1=ID   { $ast.add(new TypeDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $t.ast)); }
+        ( ',' id2=ID { $ast.add(new TypeDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $t.ast)); } )*
+    ;
 //====================================================================================================================//
 // STRUCTS ===========================================================================================================//
 //====================================================================================================================//
 struct_definition returns [StructDefinition ast]
-                  locals [ArrayList<Definition> variableDefs = new ArrayList<Definition>()]:
-      t=type '{' (vd=variable_definition { $variableDefs.addAll($vd.ast); })+ '}'
-      id=ID ';' { $ast =  new StructDefinition($id.getLine(), $id.getCharPositionInLine()+1, $id.text, $t.ast, $variableDefs); }
-   ;
+    :   'struct' '{' vdb=variable_definition_block '}' id=ID
+        { $ast = new StructDefinition($id.getLine(), $id.getCharPositionInLine()+1, $id.text, $vdb.ast); }
+    ;
 
 
 

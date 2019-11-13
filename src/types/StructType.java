@@ -1,5 +1,9 @@
 package types;
 
+import ast.statements.Statement;
+
+import java.util.ArrayList;
+
 /**
  * Author: David Walshe
  * Date: 08/10/2019
@@ -10,19 +14,29 @@ package types;
 
 public class StructType extends AbstractType {
 
+    private ArrayList<Statement> recordFields;
 
-    private static StructType instance = new StructType();
-
-    private StructType() {
-        super(0, 0);
+    public StructType(int line, int column, ArrayList<Statement> recordFields) {
+        super(line, column);
+        this.recordFields = recordFields;
     }
 
-    public static StructType getInstance() {
-        return instance;
+    public Type getType() {
+        return this;
+    }
+
+    private String getRecordFieldsAsString() {
+        StringBuilder statementBuilder = new StringBuilder("");
+        for (Statement line : recordFields) {
+            statementBuilder.append("\n    ").append(line);
+        }
+
+        return statementBuilder.toString();
     }
 
     @Override
     public String toString() {
-        return "struct";
+        return getRecordFieldsAsString();
     }
+
 }

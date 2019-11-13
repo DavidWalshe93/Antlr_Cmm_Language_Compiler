@@ -23,6 +23,6 @@ public class UserDefinedType extends AbstractType {
 
     @Override
     public String toString() {
-        return this.getType() + "";
+        return "type " + this.getType();
     }
 }

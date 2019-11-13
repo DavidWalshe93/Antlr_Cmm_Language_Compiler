@@ -1,6 +1,7 @@
 package ast.definitions;
 
-import types.Type;
+import ast.statements.Statement;
+import types.StructType;
 
 import java.util.ArrayList;
 
@@ -14,27 +15,13 @@ import java.util.ArrayList;
 
 public class StructDefinition extends AbstractDefinition {
 
-    private ArrayList<Definition> fields;
 
-    public StructDefinition(int line, int column, String name, Type type, ArrayList<Definition> fields) {
-        super(line, column, name, type);
-        this.fields = fields;
-    }
-
-    private String getFieldsAsString() {
-        StringBuilder statementBuilder = new StringBuilder("");
-        for (Definition line : fields) {
-            statementBuilder.append("\n    ").append(line).append(";");
-        }
-        if (!statementBuilder.toString().equals("")) {
-            statementBuilder.append("\n");
-        }
-
-        return statementBuilder.toString();
+    public StructDefinition(int line, int column, String name, ArrayList<Statement> fields) {
+        super(line, column, name, new StructType(line, column, fields));
     }
 
     @Override
     public String toString() {
-        return this.getType() + " {" + this.getFieldsAsString() + "} " + this.getName() + "";
+        return "typedef struct" + " {" + this.getType() + "} " + this.getName() + ";\n";
     }
 }

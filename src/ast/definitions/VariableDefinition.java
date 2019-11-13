@@ -30,7 +30,7 @@ public class VariableDefinition extends AbstractDefinition implements Statement 
 
     @Override
     public String toString() {
-        return String.format("%s %s", this.getType(), this.getName());
+        return String.format("%s %s;\n", this.getType(), this.getName());
     }
 }	
 	
