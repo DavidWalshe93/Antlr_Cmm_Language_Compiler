@@ -25,7 +25,7 @@ public class ErrorType extends AbstractType {
 
     @Override
     public String toString() {
-        return String.format("Type error in line %d and column %d: %s.",
+        return String.format("Error[%3d:%3d]\t%s.",
                 this.getLine(), this.getColumn(), this.message);
     }
 

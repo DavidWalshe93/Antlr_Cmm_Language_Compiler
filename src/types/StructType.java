@@ -15,7 +15,10 @@ import java.util.ArrayList;
 
 public class StructType extends AbstractType {
 
+    // Create recordField class, similar to VarDef
     private ArrayList<Statement> recordFields;
+
+    // Make list not Map for record lookup
 
     public StructType(int line, int column, ArrayList<Statement> recordFields) {
         super(line, column);
@@ -27,7 +30,7 @@ public class StructType extends AbstractType {
     }
 
     private String getRecordFieldsAsString() {
-        StringBuilder statementBuilder = new StringBuilder("");
+        StringBuilder statementBuilder = new StringBuilder();
         for (Statement line : recordFields) {
             statementBuilder.append("\n    ").append(line);
         }

@@ -41,5 +41,8 @@ LETTER
     : [a-zA-Z]
     ;
 
+MAIN: 'm' 'a' 'i' 'n'
+    ;
+
 ID  : (LETTER | '_') (LETTER | DIGIT | '_')*
     ;

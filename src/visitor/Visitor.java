@@ -55,7 +55,7 @@ public interface Visitor<TP, TR> {
 
     TR visit(RealLiteral realLiteral, TP param);
 
-    TR visit(StructAccess structAccess, TP param);
+    TR visit(Dot dot, TP param);
 
     TR visit(UnaryMinus unaryMinus, TP param);
 

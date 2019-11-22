@@ -1,5 +1,6 @@
 package types;
 
+import ast.ASTNode;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ public class ArrayType extends AbstractType {
         return arraySize;
     }
 
-    //    private static String[] splitArrayString = new String[10];
     @Override
     public String toString() {
         if (this.getType() instanceof ArrayType) {
@@ -57,4 +57,10 @@ public class ArrayType extends AbstractType {
         return visitor.visit(this, param);
     }
 
+    @Override
+    public Type squareBrackets(Type type, ASTNode node) {
+        if (type instanceof IntType)
+            return this.type;
+        return new ErrorType("Array notation cannot be used with " + type + " type", node);
+    }
 }

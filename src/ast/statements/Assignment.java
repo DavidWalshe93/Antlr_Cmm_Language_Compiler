@@ -14,6 +14,7 @@ public class Assignment extends AbstractASTNode implements Statement {
 
     private Expression leftHandSide;
     private Expression rightHandSide;
+    private Boolean lvalue;
 
     public Assignment(int line, int column, Expression lhs, Expression rhs) {
         super(line, column);
@@ -27,6 +28,14 @@ public class Assignment extends AbstractASTNode implements Statement {
 
     public Expression getRightHandSide() {
         return this.rightHandSide;
+    }
+
+    public Boolean getLvalue() {
+        return this.lvalue;
+    }
+
+    public void setLvalue(Boolean lvalue) {
+        this.lvalue = lvalue;
     }
 
     @Override

@@ -6,9 +6,10 @@
 
 package types;
 
+import ast.ASTNode;
 import visitor.Visitor;
 
-public class IntType extends AbstractType {
+public class IntType extends PrimitiveType {
 
     private static IntType instance = new IntType();
 
@@ -34,4 +35,14 @@ public class IntType extends AbstractType {
         return visitor.visit(this, param);
     }
 
+    @Override
+    public Type implicitCasting(Type type, ASTNode node, String errorMsg) {
+        if (type instanceof RealType)
+            return RealType.getInstance();
+        if (type instanceof IntType)
+            return this;
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(errorMsg, node);
+    }
 }

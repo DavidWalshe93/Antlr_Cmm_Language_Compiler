@@ -34,8 +34,8 @@ public class FunctionExpression extends AbstractExpression implements Statement 
         this.definition = definition;
     }
 
-    public Variable getName() {
-        return name;
+    public String getName() {
+        return name.getName();
     }
 
     public ArrayList<Expression> getParameters() {

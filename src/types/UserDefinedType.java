@@ -10,6 +10,7 @@ import visitor.Visitor;
  * College: Cork Institute of Technology
  */
 
+
 public class UserDefinedType extends AbstractType {
 
     private String type;

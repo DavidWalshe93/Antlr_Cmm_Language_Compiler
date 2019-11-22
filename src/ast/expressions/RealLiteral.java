@@ -6,6 +6,7 @@
 
 package ast.expressions;
 
+import types.RealType;
 import visitor.Visitor;
 
 public class RealLiteral extends AbstractExpression {
@@ -15,6 +16,7 @@ public class RealLiteral extends AbstractExpression {
     public RealLiteral(int line, int column, double value) {
         super(line, column);
         this.value = value;
+        this.setType(RealType.getInstance());
     }
 
     @Override

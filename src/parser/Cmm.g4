@@ -21,13 +21,20 @@ definitions returns [List<Definition> ast = new ArrayList<Definition>()]
         | variable_definition   { $ast.addAll($variable_definition.ast); }
         | function_definition   { $ast.add($function_definition.ast); }
         )*
+       main                     { $ast.add($main.ast); }
+    ;
+main returns [Definition ast]
+    :   'void' m=MAIN '(' ')'
+        (   '{' '}'                { $ast = new FunctionDefinition($m.getLine(), $m.getCharPositionInLine()+1, "main", VoidType.getInstance(), new ArrayList<Definition>(), new ArrayList<Statement>()); }
+        |   fb=function_block      { $ast = new FunctionDefinition($m.getLine(), $m.getCharPositionInLine()+1, "main", VoidType.getInstance(), new ArrayList<Definition>(), $fb.ast); }
+        )
     ;
 //====================================================================================================================//
 // VARIABLES =========================================================================================================//
 //====================================================================================================================//
 variable_definition returns [ArrayList<Definition> ast = new ArrayList<Definition>()]
     :   (type id1=ID    { $ast.add(new VariableDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $id1.text, $type.ast)); }
-        (',' id2=ID     { $ast.add(new VariableDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $type.ast)); })*) ';'
+        (',' id2=ID     { $ast.add(new VariableDefinition($id2.getLine(), $id2.getCharPositionInLine()+1, $id2.text, $type.ast)); })*)? ';'
     ;
 //====================================================================================================================//
 // TYPES =============================================================================================================//
@@ -105,7 +112,7 @@ argument_list returns [ArrayList<Expression> args = new ArrayList<Expression>()]
 expression returns [Expression ast] locals [ArrayList<Expression> indexes = new ArrayList<Expression>()]
     :   ID                                                       { $ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }
     |   e1=expression '[' e2=expression ']'                      { $ast = new Indexing($e1.start.getLine(), $e1.start.getCharPositionInLine()+1, $e1.ast, $e2.ast); }// indexing node look at arthmetic node. compomsite.
-    |   e1=expression '.' id=ID                                  { $ast = new StructAccess($e1.start.getLine(), $e1.start.getCharPositionInLine()+1, $e1.ast, $id.text); }
+    |   e1=expression '.' id=ID                                  { $ast = new Dot($e1.start.getLine(), $e1.start.getCharPositionInLine()+1, $e1.ast, $id.text); }
     |   fi=function_invocation                                   { $ast = $fi.ast; }
     |   i=INT_CONSTANT                                           { $ast = new IntLiteral($i.getLine(), $i.getCharPositionInLine()+1, LexerHelper.lexemeToInt($i.text)); }
     |   r=REAL_CONSTANT                                          { $ast = new RealLiteral($r.getLine(), $r.getCharPositionInLine()+1, LexerHelper.lexemeToReal($r.text)); }

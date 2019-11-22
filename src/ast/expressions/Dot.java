@@ -10,12 +10,12 @@ import visitor.Visitor;
  * College: Cork Institute of Technology
  */
 
-public class StructAccess extends AbstractExpression {
+public class Dot extends AbstractExpression {
 
     private Expression record;
     private String fieldName;
 
-    public StructAccess(int line, int column, Expression record, String fieldName) {
+    public Dot(int line, int column, Expression record, String fieldName) {
         super(line, column);
         this.record = record;
         this.fieldName = fieldName;

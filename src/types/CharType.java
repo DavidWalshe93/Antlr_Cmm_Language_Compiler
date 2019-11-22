@@ -1,5 +1,6 @@
 package types;
 
+import ast.ASTNode;
 import visitor.Visitor;
 
 /**
@@ -10,7 +11,7 @@ import visitor.Visitor;
  * College: Cork Institute of Technology
  */
 
-public class CharType extends AbstractType {
+public class CharType extends PrimitiveType {
 
     private static CharType instance = new CharType();
 
@@ -34,5 +35,18 @@ public class CharType extends AbstractType {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public Type implicitCasting(Type type, ASTNode node, String errorMsg) {
+        if (type instanceof RealType)
+            return RealType.getInstance();
+        if (type instanceof IntType)
+            return IntType.getInstance();
+        if (type instanceof CharType)
+            return this;
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(errorMsg, node);
     }
 }

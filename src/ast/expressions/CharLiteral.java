@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import types.CharType;
 import visitor.Visitor;
 
 /**
@@ -17,6 +18,7 @@ public class CharLiteral extends AbstractExpression {
     public CharLiteral(int line, int column, char value) {
         super(line, column);
         this.value = value;
+        this.setType(CharType.getInstance());
     }
 
     @Override

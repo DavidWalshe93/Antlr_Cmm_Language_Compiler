@@ -1,0 +1,2 @@
+(record.field1).field2 // record
+(record.field3) // int

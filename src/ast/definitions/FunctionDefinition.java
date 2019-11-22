@@ -21,6 +21,14 @@ public class FunctionDefinition extends AbstractDefinition {
         this.body = body;
     }
 
+    public ArrayList<Statement> getBody() {
+        return body;
+    }
+
+    public Type getReturnType() {
+        return ((FunctionType) this.getType()).getReturnType();
+    }
+
     private String getParametersAsString(ArrayList<Definition> parameters) {
         StringBuilder parameterBuilder = new StringBuilder();
         for (int i = 0; i < parameters.size(); i++) {
@@ -33,7 +41,7 @@ public class FunctionDefinition extends AbstractDefinition {
     }
 
     private String getStatementsAsString() {
-        StringBuilder statementBuilder = new StringBuilder("");
+        StringBuilder statementBuilder = new StringBuilder();
         for (Statement line : body) {
             statementBuilder.append("\n    ").append(line.toString().trim());
         }

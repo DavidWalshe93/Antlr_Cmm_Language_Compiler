@@ -14,6 +14,7 @@ public class Read extends AbstractASTNode implements Statement {
      * Expression to be read
      */
     private Expression expression;
+    private Boolean lvalue;
 
     public Read(int line, int column, Expression expression) {
         super(line, column);
@@ -22,6 +23,14 @@ public class Read extends AbstractASTNode implements Statement {
 
     public Expression getExpression() {
         return expression;
+    }
+
+    public Boolean getLvalue() {
+        return this.lvalue;
+    }
+
+    public void setLvalue(Boolean lvalue) {
+        this.lvalue = lvalue;
     }
 
     @Override

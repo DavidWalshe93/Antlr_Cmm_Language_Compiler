@@ -6,30 +6,30 @@
 
 package ast.expressions;
 
-import ast.definitions.VariableDefinition;
+import ast.definitions.Definition;
 import visitor.Visitor;
 
 public class Variable extends AbstractExpression {
 
     private String name;
-    private VariableDefinition definition;
+    private Definition definition;
 
     public Variable(int line, int column, String name) {
         super(line, column);
         this.name = name;
-
     }
 
     public String getName() {
         return name;
     }
 
-    public VariableDefinition getDefinition() {
+    public Definition getDefinition() {
         return definition;
     }
 
-    public void setDefinition(VariableDefinition definition) {
+    public void setDefinition(Definition definition) {
         this.definition = definition;
+        this.setType(definition.getType());
     }
 
     @Override

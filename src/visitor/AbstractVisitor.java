@@ -20,8 +20,9 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Program program, TP param) {
-        for (Definition definition : program.getDefinitions())
+        for (Definition definition : program.getDefinitions()) {
             definition.accept(this, param);
+        }
         return null;
     }
 
@@ -29,21 +30,26 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(FunctionDefinition functionDefinition, TP param) {
+        for (Statement stmt : functionDefinition.getBody())
+            stmt.accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(StructDefinition structDefinition, TP param) {
+//        structDefinition. .accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(TypeDefinition typeDefinition, TP param) {
+//        typeDefinition.accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(VariableDefinition variableDefinition, TP param) {
+        variableDefinition.getType().accept(this, param);
         return null;
     }
 
@@ -100,7 +106,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
-    public TR visit(StructAccess structAccess, TP param) {
+    public TR visit(Dot dot, TP param) {
         return null;
     }
 
@@ -118,6 +124,9 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Assignment assignment, TP param) {
+        System.out.println("assignment");
+        assignment.getLeftHandSide().accept(this, param);
+        assignment.getRightHandSide().accept(this, param);
         return null;
     }
 
@@ -133,6 +142,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Read read, TP param) {
+        read.getExpression().accept(this, param);
         return null;
     }
 

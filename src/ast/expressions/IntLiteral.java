@@ -6,6 +6,7 @@
 
 package ast.expressions;
 
+import types.IntType;
 import visitor.Visitor;
 
 public class IntLiteral extends AbstractExpression {
@@ -15,6 +16,7 @@ public class IntLiteral extends AbstractExpression {
     public IntLiteral(int line, int column, int value) {
         super(line, column);
         this.value = value;
+        this.setType(IntType.getInstance());
     }
 
     @Override

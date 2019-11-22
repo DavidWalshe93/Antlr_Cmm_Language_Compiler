@@ -26,6 +26,10 @@ public class Cast extends AbstractExpression {
         return castType;
     }
 
+    public Expression getExpression() {
+        return expression;
+    }
+
     @Override
     public String toString() {
         return String.format("(%s)%s", this.getCastType(), this.expression);
