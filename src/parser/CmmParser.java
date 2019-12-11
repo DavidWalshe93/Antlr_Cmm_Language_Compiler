@@ -494,6 +494,10 @@ public class CmmParser extends Parser {
 		return _localctx;
 	}
 
+	public final TypeContext type() throws RecognitionException {
+		return type(0);
+	}
+
 	private TypeContext type(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
@@ -646,10 +650,6 @@ public class CmmParser extends Parser {
 			exitRule();
 		}
 		return _localctx;
-	}
-
-	public final TypeContext type() throws RecognitionException {
-		return type(0);
 	}
 
 	public final BlockContext block() throws RecognitionException {
@@ -1100,6 +1100,10 @@ public class CmmParser extends Parser {
 			exitRule();
 		}
 		return _localctx;
+	}
+
+	public final ExpressionContext expression() throws RecognitionException {
+		return expression(0);
 	}
 
 	private ExpressionContext expression(int _p) throws RecognitionException {
@@ -1848,10 +1852,6 @@ public class CmmParser extends Parser {
 		}
 	}
 
-	public final ExpressionContext expression() throws RecognitionException {
-		return expression(0);
-	}
-
 	public static class Function_blockContext extends ParserRuleContext {
 		public ArrayList<Statement> ast = new ArrayList<Statement>();
 		public Variable_definition_blockContext v;
@@ -2384,7 +2384,6 @@ public class CmmParser extends Parser {
 	public static class Record_definition_blockContext extends ParserRuleContext {
 		public ArrayList<Definition> ast = new ArrayList<Definition>();
 		public Record_definitionContext v;
-
 		public Record_definition_blockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2408,7 +2407,6 @@ public class CmmParser extends Parser {
 		public TypeContext type;
 		public Token id1;
 		public Token id2;
-
 		public Record_definitionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}

@@ -8,11 +8,11 @@ int f(int pi, double pd, char pc) {
   double ld;
   int li;
   char lc;
-
+  
   li = pi;
   ld = pd;
   lc = pc;
-
+  
   return pi;
 }
 
