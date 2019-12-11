@@ -36,7 +36,23 @@ public class IntType extends PrimitiveType {
     }
 
     @Override
-    public Type implicitCasting(Type type, ASTNode node, String errorMsg) {
+    public Type arithmetic(Type type, ASTNode node) {
+        // CHECK 2) [type-checking] is this implementation correct for type promotion
+        String errorMsg = "Type " + this + " cannot be used in arithmetic operation with " + type;
+
+        if (type instanceof RealType)
+            return RealType.getInstance();
+        if (type instanceof IntType)
+            return this;
+        if (type instanceof CharType)
+            return IntType.getInstance();
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(errorMsg, node);
+    }
+
+    @Override
+    public Type typeInference(Type type, ASTNode node, String errorMsg) {
         if (type instanceof RealType)
             return RealType.getInstance();
         if (type instanceof IntType)
@@ -45,4 +61,5 @@ public class IntType extends PrimitiveType {
             return type;
         return new ErrorType(errorMsg, node);
     }
+
 }

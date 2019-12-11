@@ -13,6 +13,8 @@ import ast.ASTNode;
 import errorhandler.ErrorHandler;
 import visitor.Visitor;
 
+import java.util.ArrayList;
+
 public class ErrorType extends AbstractType {
 
     private String message;
@@ -34,4 +36,48 @@ public class ErrorType extends AbstractType {
         return visitor.visit(this, param);
     }
 
+    @Override
+    public Type comparison(Type type, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type assignment(Type type, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type logic(Type type, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type parenthesis(ArrayList<Type> invocationTypes, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type dot(String name, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type arithmetic(Type type, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type promote(Type type, ASTNode astNode) {
+        return this;
+    }
+
+    @Override
+    public Type squareBrackets(Type type, ASTNode node) {
+        return this;
+    }
+
+    @Override
+    public Type returns(Type type, ASTNode node) {
+        return this;
+    }
 }

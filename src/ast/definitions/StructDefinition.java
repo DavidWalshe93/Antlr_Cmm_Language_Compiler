@@ -1,6 +1,5 @@
 package ast.definitions;
 
-import ast.statements.Statement;
 import types.StructType;
 import visitor.Visitor;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class StructDefinition extends AbstractDefinition {
 
 
-    public StructDefinition(int line, int column, String name, ArrayList<Statement> fields) {
+    public StructDefinition(int line, int column, String name, ArrayList<Definition> fields) {
         super(line, column, name, new StructType(line, column, fields));
     }
 

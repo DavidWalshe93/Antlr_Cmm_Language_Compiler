@@ -1,15 +1,10 @@
 package semantic;
 
-import ast.definitions.Definition;
-import ast.definitions.FunctionDefinition;
-import ast.definitions.VariableDefinition;
-import ast.expressions.*;
-import ast.statements.Assignment;
-import ast.statements.Return;
-import ast.statements.Statement;
-import ast.statements.Write;
+import ast.definitions.*;
+import ast.expressions.FunctionExpression;
+import ast.expressions.Variable;
 import types.ErrorType;
-import types.FunctionType;
+import types.UserDefinedType;
 import visitor.AbstractVisitor;
 
 import java.util.ArrayList;
@@ -28,12 +23,18 @@ import java.util.Map;
 public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 
     private SymbolTable symbolTable = new SymbolTable();
+    private ErrorBuilder errorBuilder = new ErrorBuilder();
 
     @Override
     public Void visit(VariableDefinition variableDefinition, Void param) {
         if (!symbolTable.insert(variableDefinition)) {
             new ErrorType("The variable identifier \"" + variableDefinition.getName()
                     + "\" has already been defined in this scope", variableDefinition);
+        }
+
+        // Replaces user-defined types with their correlating primitive, array or struct type
+        if (variableDefinition.getType() instanceof UserDefinedType) {
+            variableDefinition.setType(symbolTable.find(((UserDefinedType) variableDefinition.getType()).getType()).getType());
         }
         return null;
     }
@@ -45,106 +46,60 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
                     + "\" has already been defined in this scope", functionDefinition);
         } else {
             symbolTable.set();
-            FunctionType functionType = (FunctionType) functionDefinition.getType();
-            for (Definition parameter : functionType.getParameters())
-                parameter.accept(this, null);
-            for (Statement statement : functionDefinition.getBody())
-                statement.accept(this, null);
+            super.visit(functionDefinition, param);
             symbolTable.reset();
         }
         return null;
     }
 
     @Override
+    public Void visit(TypeDefinition typeDefinition, Void param) {
+        super.visit(typeDefinition, param);
+        if (!symbolTable.insert(typeDefinition)) {
+            new ErrorType("The typedef \"" + typeDefinition.getName()
+                    + "\" has already been defined in this scope", typeDefinition);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(StructDefinition structDefinition, Void param) {
+        super.visit(structDefinition, param);
+        if (!symbolTable.insert(structDefinition)) {
+            new ErrorType("The struct \"" + structDefinition.getName()
+                    + "\" has already been defined in this scope", structDefinition);
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(Variable variable, Void param) {
-        variable.setDefinition(symbolTable.find(variable.getName()));
-        if (variable.getDefinition() == null) {
-            variable.setDefinition(new VariableDefinition(variable.getLine(), variable.getColumn(),
-                    variable.getName(), new ErrorType("The variable identifier \"" + variable.getName() + "\" is not previously defined", variable)));
+        Definition retrievedDefinition = symbolTable.find(variable.getName());
+        // Check if the definition is present in the code file
+        if (retrievedDefinition == null) {
+            variable.setDefinition(this.errorBuilder.error(variable, "The variable identifier \"" + variable.getName() + "\" is not previously defined"));
+            return null;
+        }
+        variable.setDefinition(retrievedDefinition);
+        return null;
+    }
+
+    @Override
+    public Void visit(RecordDefinition recordDefinition, Void param) {
+        super.visit(recordDefinition, param);
+        if (recordDefinition.getType() instanceof UserDefinedType) {
+            recordDefinition.setType(symbolTable.find(((UserDefinedType) recordDefinition.getType()).getType()).getType());
         }
         return null;
     }
 
     @Override
     public Void visit(FunctionExpression functionExpression, Void param) {
-        System.out.println(functionExpression.getName());
+        super.visit(functionExpression, param);
         functionExpression.setDefinition(symbolTable.find(functionExpression.getName()));
         if (functionExpression.getDefinition() == null) {
-            functionExpression.setDefinition(new FunctionDefinition(functionExpression.getLine(), functionExpression.getColumn(),
-                    functionExpression.getName(), new ErrorType("The function identifier \"" + functionExpression.getName() + "\" is not previously defined", functionExpression),
-                    null, null));
+            functionExpression.setDefinition(errorBuilder.error(functionExpression, "The function identifier \"" + functionExpression.getName() + "\" is not previously defined"));
         }
-        return null;
-    }
-
-    @Override
-    public Void visit(Arithmetic arithmetic, Void param) {
-        arithmetic.getOperand1().accept(this, null);
-        arithmetic.getOperand2().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Write write, Void param) {
-        write.getExpression().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Cast cast, Void param) {
-        cast.getExpression().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Comparison comparison, Void param) {
-        comparison.getOperand1().accept(this, null);
-        comparison.getOperand2().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Indexing indexing, Void param) {
-        indexing.getArrayIndex().accept(this, null);
-        indexing.getExpression().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Logic logic, Void param) {
-        logic.getOperand1().accept(this, null);
-        logic.getOperand2().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Not not, Void param) {
-        not.getOperand().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Dot dot, Void param) {
-        dot.getRecord().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(UnaryMinus unaryMinus, Void param) {
-        unaryMinus.getExpression().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Return _return, Void param) {
-        _return.getExpression().accept(this, null);
-        return null;
-    }
-
-    @Override
-    public Void visit(Assignment assignment, Void param) {
-        assignment.getLeftHandSide().accept(this, null);
-        assignment.getRightHandSide().accept(this, null);
         return null;
     }
 
@@ -159,12 +114,12 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
             scope = table.size() - 1;
         }
 
-        public void set() {
+        void set() {
             table.add(new HashMap<>());
             scope = table.size() - 1;
         }
 
-        public void reset() {
+        void reset() {
             table.remove(scope);
             scope = table.size() - 1;
         }
@@ -184,9 +139,6 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
                 if (table.get(scope).containsKey(id))
                     return table.get(scope).get(id);
             }
-            for (StackTraceElement i : Thread.currentThread().getStackTrace()) {
-                System.out.println(i);
-            }
             return null;
         }
 
@@ -203,6 +155,20 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
             sb.append("-----------------------------------");
 
             return sb.toString();
+        }
+    }
+
+    private static class ErrorBuilder {
+
+        VariableDefinition error(Variable variable, String errorMsg) {
+            return new VariableDefinition(variable.getLine(), variable.getColumn(),
+                    variable.getName(), new ErrorType(errorMsg, variable));
+        }
+
+        FunctionDefinition error(FunctionExpression functionExpression, String errorMsg) {
+            return new FunctionDefinition(functionExpression.getLine(), functionExpression.getColumn(),
+                    functionExpression.getName(), new ErrorType(errorMsg, functionExpression),
+                    null, null);
         }
     }
 }

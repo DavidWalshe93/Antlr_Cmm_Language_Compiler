@@ -16,10 +16,12 @@ public abstract class PrimitiveType extends AbstractType {
         super(line, column);
     }
 
+    abstract Type typeInference(Type type, ASTNode node, String errorMsg);
+
     @Override
-    public Type arithmetic(Type type, ASTNode node) {
-        String errorMsg = "Type " + type + " cannot be used in arithmetic operations with IntType";
-        return implicitCasting(type, node, errorMsg);
+    public Type assignment(Type type, ASTNode node) {
+        String errorMsg = this + " cannot be assigned to " + type;
+        return this.typeInference(type, node, errorMsg);
     }
 
     @Override
@@ -27,11 +29,39 @@ public abstract class PrimitiveType extends AbstractType {
         if (type instanceof VoidType) {
             return new ErrorType("Cannot return '" + this.getClass().getSimpleName() + "' if void is specified as the return type in function signature", node);
         }
-        String errorMsg = "Cannot return '" + this.getClass().getSimpleName() + "' for function return signature of type '" + type + "'";
-        return implicitCasting(type, node, errorMsg);
+        String errorMsg = "Cannot return '" + this + "' for function return signature of type '" + type + "'";
+        return typeInference(type, node, errorMsg);
     }
 
+    @Override
+    public Type logic(Type type, ASTNode node) {
+        String errorMsg = "Type " + type + " cannot be used in logic operation with " + this.getClass().getSimpleName();
 
-    abstract Type implicitCasting(Type type, ASTNode node, String errorMsg);
+        return BinaryOperationCheck(type, node, errorMsg);
+    }
 
+    @Override
+    public Type comparison(Type type, ASTNode node) {
+        String errorMsg = "Cannot compare type " + type + " with " + this.getClass().getSimpleName();
+
+        return BinaryOperationCheck(type, node, errorMsg);
+    }
+
+    private Type BinaryOperationCheck(Type type, ASTNode node, String errorMsg) {
+        if (type instanceof RealType)
+            return IntType.getInstance();
+        if (type instanceof IntType)
+            return IntType.getInstance();
+        if (type instanceof CharType)
+            return IntType.getInstance();
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(errorMsg, node);
+    }
+
+    @Override
+    public Type promote(Type type, ASTNode node) {
+        String errorMsg = this + " cannot be passed as " + type;
+        return typeInference(type, node, errorMsg);
+    }
 }

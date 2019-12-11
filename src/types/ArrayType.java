@@ -61,6 +61,14 @@ public class ArrayType extends AbstractType {
     public Type squareBrackets(Type type, ASTNode node) {
         if (type instanceof IntType)
             return this.type;
-        return new ErrorType("Array notation cannot be used with " + type + " type", node);
+        return new ErrorType("Array index must be int", node);
+    }
+
+    @Override
+    public Type assignment(Type type, ASTNode node) {
+        if (type instanceof ArrayType) {
+            return new ErrorType("Arrays cannot be assigned", node);
+        }
+        return this.getType().assignment(type, node);
     }
 }

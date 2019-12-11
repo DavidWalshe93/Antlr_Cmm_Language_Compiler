@@ -25,6 +25,11 @@ abstract class AbstractDefinition extends AbstractASTNode implements Definition 
     }
 
     @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @Override
     public Type getType() {
         return type;
     }

@@ -2,6 +2,8 @@ package ast.expressions;
 
 import ast.definitions.Definition;
 import ast.statements.Statement;
+import types.FunctionType;
+import types.Type;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -32,6 +34,11 @@ public class FunctionExpression extends AbstractExpression implements Statement 
 
     public void setDefinition(Definition definition) {
         this.definition = definition;
+    }
+
+    @Override
+    public Type getType() {
+        return ((FunctionType) this.getDefinition().getType()).getReturnType();
     }
 
     public String getName() {

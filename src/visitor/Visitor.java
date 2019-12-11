@@ -1,10 +1,7 @@
 package visitor;
 
 import ast.Program;
-import ast.definitions.FunctionDefinition;
-import ast.definitions.StructDefinition;
-import ast.definitions.TypeDefinition;
-import ast.definitions.VariableDefinition;
+import ast.definitions.*;
 import ast.expressions.*;
 import ast.statements.*;
 import types.*;
@@ -32,6 +29,8 @@ public interface Visitor<TP, TR> {
     TR visit(TypeDefinition typeDefinition, TP param);
 
     TR visit(VariableDefinition variableDefinition, TP param);
+
+    TR visit(RecordDefinition variableDefinition, TP param);
 
     // -------------- Expressions --------------------------------------------------------------------------------------
 

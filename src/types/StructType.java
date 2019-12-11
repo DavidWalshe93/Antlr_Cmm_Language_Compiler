@@ -1,9 +1,11 @@
 package types;
 
-import ast.statements.Statement;
+import ast.ASTNode;
+import ast.definitions.Definition;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Author: David Walshe
@@ -16,13 +18,28 @@ import java.util.ArrayList;
 public class StructType extends AbstractType {
 
     // Create recordField class, similar to VarDef
-    private ArrayList<Statement> recordFields;
+    private HashMap<String, Definition> recordFields;
 
     // Make list not Map for record lookup
 
-    public StructType(int line, int column, ArrayList<Statement> recordFields) {
+    public StructType(int line, int column, ArrayList<Definition> recordFields) {
         super(line, column);
-        this.recordFields = recordFields;
+        this.recordFields = new HashMap<String, Definition>();
+        for (Definition recordField : recordFields) {
+            if (this.recordFields.containsKey(recordField.getName()))
+                new ErrorType("Repeated variable in Struct Definition", recordField);
+            else {
+                this.recordFields.put(recordField.getName(), recordField);
+            }
+        }
+    }
+
+    public HashMap<String, Definition> getRecordFields() {
+        return recordFields;
+    }
+
+    public Type getRecordFieldType(String key) {
+        return recordFields.getOrDefault(key, null).getType();
     }
 
     public Type getType() {
@@ -31,9 +48,7 @@ public class StructType extends AbstractType {
 
     private String getRecordFieldsAsString() {
         StringBuilder statementBuilder = new StringBuilder();
-        for (Statement line : recordFields) {
-            statementBuilder.append("\n    ").append(line);
-        }
+        recordFields.forEach((k, v) -> statementBuilder.append("\n    ").append(v));
 
         return statementBuilder.toString();
     }
@@ -48,4 +63,12 @@ public class StructType extends AbstractType {
         return visitor.visit(this, param);
     }
 
+    @Override
+    public Type dot(String name, ASTNode node) {
+        Type recordFieldType = this.getRecordFieldType(name);
+        if (recordFieldType == null)
+            return new ErrorType("atrribute " + name + " does not exist in record", node);
+        else
+            return recordFieldType;
+    }
 }

@@ -1,72 +1,15 @@
-// char -> char
-void char_cha(char _char) {
-    return _char;
+
+int[10] v;
+int[10][10] w;
+
+void main() {
+  int i;
+
+  write i[0];    // * Error: i is not an array
+  v[3] = 3.4;    // * Error: double cannot be assigned to int
+  v[1] = 'a';    // * Error: char is not converted into int
+  write v[1][2]; // * Error: v[1] is not an array
+  w[10] = 3;     // * Error: an int cannot be assigned to int[]
+  w[10] = v;     // * Error: arrays cannot be assigned
+  write v['a'];  // * Error: index must be int
 }
-
-
-// int -> char
-void char_in(int _int) {
-    return _int;
-}
-
-
-// double -> char
-void char_doubl(double _double) {
-    return _double;
-}
-
-// char -> char
-char char_char(char _char) {
-    return _char;
-}
-
-
-// int -> char
-char char_int(int _int) {
-    return _int;
-}
-
-
-// double -> char
-char char_double(double _double) {
-    return _double;
-}
-
-
-// char -> int
-int int_char(char _char) {
-    return _char;
-}
-
-
-// int -> int
-int int_int(int _int) {
-    return _int;
-}
-
-
-// double -> int
-int int_double(double _double) {
-    return _double;
-}
-
-
-// char -> double
-double double_char(char _char) {
-    return _char;
-}
-
-
-// int -> double
-double double_int(int _int) {
-    return _int;
-}
-
-
-// double -> double
-double double_double(double _double) {
-    return _double;
-}
-
-
-void main() { }

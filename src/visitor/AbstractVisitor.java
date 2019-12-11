@@ -20,9 +20,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Program program, TP param) {
-        for (Definition definition : program.getDefinitions()) {
-            definition.accept(this, param);
-        }
+        program.getDefinitions().forEach((definition) -> definition.accept(this, param));
         return null;
     }
 
@@ -30,20 +28,20 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(FunctionDefinition functionDefinition, TP param) {
-        for (Statement stmt : functionDefinition.getBody())
-            stmt.accept(this, param);
+        functionDefinition.getType().accept(this, param);
+        functionDefinition.getBody().forEach((stmt) -> stmt.accept(this, param));
         return null;
     }
 
     @Override
     public TR visit(StructDefinition structDefinition, TP param) {
-//        structDefinition. .accept(this, param);
+        structDefinition.getType().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(TypeDefinition typeDefinition, TP param) {
-//        typeDefinition.accept(this, param);
+        typeDefinition.getType().accept(this, param);
         return null;
     }
 
@@ -53,70 +51,95 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
         return null;
     }
 
+    @Override
+    public TR visit(RecordDefinition recordDefinition, TP param) {
+        recordDefinition.getType().accept(this, param);
+        return null;
+    }
+
     // -------------- Expressions --------------------------------------------------------------------------------------
 
     @Override
     public TR visit(Arithmetic arithmetic, TP param) {
+        arithmetic.getOperand1().accept(this, param);
+        arithmetic.getOperand2().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(Cast cast, TP param) {
+        cast.getExpression().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(CharLiteral charLiteral, TP param) {
-        return null;
-    }
-
-    @Override
-    public TR visit(Comparison comparison, TP param) {
-        return null;
-    }
-
-    @Override
-    public TR visit(FunctionExpression functionExpression, TP param) {
-        return null;
-    }
-
-    @Override
-    public TR visit(Indexing indexing, TP param) {
+        charLiteral.getType().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(IntLiteral intLiteral, TP param) {
-        return null;
-    }
-
-    @Override
-    public TR visit(Logic logic, TP param) {
-        return null;
-    }
-
-    @Override
-    public TR visit(Not not, TP param) {
+        intLiteral.getType().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(RealLiteral realLiteral, TP param) {
+        realLiteral.getType().accept(this, param);
+        return null;
+    }
+
+    @Override
+    public TR visit(Comparison comparison, TP param) {
+        comparison.getOperand1().accept(this, param);
+        comparison.getOperand2().accept(this, param);
+        return null;
+    }
+
+    @Override
+    public TR visit(FunctionExpression functionExpression, TP param) {
+        functionExpression.getParameters().forEach((parameter) -> parameter.accept(this, param));
+
+        return null;
+    }
+
+    @Override
+    public TR visit(Indexing indexing, TP param) {
+        indexing.getArrayIndex().accept(this, param);
+        indexing.getExpression().accept(this, param);
+        return null;
+    }
+
+    @Override
+    public TR visit(Logic logic, TP param) {
+        logic.getOperand1().accept(this, param);
+        logic.getOperand2().accept(this, param);
+        return null;
+    }
+
+    @Override
+    public TR visit(Not not, TP param) {
+        not.getOperand().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(Dot dot, TP param) {
+        dot.getRecord().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(UnaryMinus unaryMinus, TP param) {
+        unaryMinus.getExpression().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(Variable variable, TP param) {
+        variable.getType().accept(this, param);
+        variable.getDefinition().accept(this, param);
         return null;
     }
 
@@ -124,19 +147,21 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Assignment assignment, TP param) {
-        System.out.println("assignment");
         assignment.getLeftHandSide().accept(this, param);
         assignment.getRightHandSide().accept(this, param);
         return null;
     }
 
     @Override
-    public TR visit(Else _else, TP param) {
+    public TR visit(If _if, TP param) {
+        _if.getCondition().accept(this, param);
+        _if.getStatements().forEach((stmt) -> stmt.accept(this, param));
         return null;
     }
 
     @Override
-    public TR visit(If _if, TP param) {
+    public TR visit(Else _else, TP param) {
+        _else.getStatements().forEach((stmt) -> stmt.accept(this, param));
         return null;
     }
 
@@ -148,16 +173,20 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(Return _return, TP param) {
+        _return.getExpression().accept(this, param);
         return null;
     }
 
     @Override
     public TR visit(While _while, TP param) {
+        _while.getCondition().accept(this, param);
+        _while.getStatements().forEach((stmt) -> stmt.accept(this, param));
         return null;
     }
 
     @Override
     public TR visit(Write write, TP param) {
+        write.getExpression().accept(this, param);
         return null;
     }
 
@@ -165,6 +194,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(ArrayType arrayType, TP param) {
+        arrayType.getType().accept(this, param);
         return null;
     }
 
@@ -180,6 +210,9 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(FunctionType functionType, TP param) {
+        functionType.getParameters().forEach((parameter) -> parameter.accept(this, param));
+        functionType.getReturnType().accept(this, param);
+
         return null;
     }
 
@@ -195,6 +228,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(StructType structType, TP param) {
+        structType.getRecordFields().forEach((k, recordField) -> recordField.accept(this, param));
         return null;
     }
 

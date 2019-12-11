@@ -31,12 +31,12 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
 
     @Override
     public Type assignment(Type type, ASTNode node) {
-        if (type instanceof types.ErrorType)
+        if (type instanceof ErrorType)
             return type;
         if (this.getClass().equals(type.getClass()))
             // * Both operands have the same type
             return type;
-        return new ErrorType("Assignments require left- and right-hand sides to have the same type", node);
+        return new ErrorType(this + " cannot be assigned to " + type, node);
     }
 
     @Override
@@ -47,18 +47,13 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
     }
 
     @Override
-    public Type parenthesis(ArrayList<Type> types, ASTNode node) {
-        for (Type type : types)
-            if (type instanceof ErrorType)
-                return type;
-        return new ErrorType(node + " type is not callable", node);
+    public Type parenthesis(ArrayList<Type> invocationTypes, ASTNode node) {
+        return new ErrorType("is not callable", node);
     }
 
     @Override
-    public Type dot(Type type, ASTNode node) {
-        if (type instanceof ErrorType)
-            return type;
-        return new ErrorType("Record access is not supported with " + type + " type", node);
+    public Type dot(String name, ASTNode node) {
+        return new ErrorType("Record access is not supported with non-record type", node);
     }
 
     @Override
@@ -69,9 +64,23 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
     }
 
     @Override
-    public Type returns(Type type, ASTNode astNode) {
+    public Type logic(Type type, ASTNode node) {
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(type + " type cannot be used in logic expressions", node);
+    }
+
+    @Override
+    public Type returns(Type type, ASTNode node) {
         if (type instanceof ErrorType)
             return type;
         return null;
+    }
+
+    @Override
+    public Type promote(Type type, ASTNode astNode) {
+        if (type instanceof ErrorType)
+            return type;
+        return new ErrorType(type + " type cannot be promoted", astNode);
     }
 }

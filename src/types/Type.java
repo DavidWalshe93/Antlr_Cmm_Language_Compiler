@@ -23,13 +23,16 @@ public interface Type extends ASTNode {
 
     Type squareBrackets(Type type, ASTNode astNode);
 
-    Type dot(Type type, ASTNode astNode);
+    Type dot(String type, ASTNode astNode);
 
-    Type parenthesis(ArrayList<Type> types, ASTNode astNode);
+    Type parenthesis(ArrayList<Type> invocationTypes, ASTNode astNode);
 
     Type returns(Type returnType, ASTNode astNode);
 
     Type comparison(Type type, ASTNode astNode);
 
+    Type logic(Type type, ASTNode astNode);
+
+    Type promote(Type type, ASTNode astNode);
 
 }

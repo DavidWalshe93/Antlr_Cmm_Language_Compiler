@@ -2,6 +2,7 @@ package types;
 
 import ast.ASTNode;
 import ast.definitions.Definition;
+import ast.expressions.FunctionExpression;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -49,24 +50,44 @@ public class FunctionType extends AbstractType {
 
     @Override
     public Type parenthesis(ArrayList<Type> invocationTypes, ASTNode node) {
-        return checkParameterLength(invocationTypes, node);
+        // CHECK - 1) [type-checking] Implementation correct for functionExpression
+
+        ArrayList<Type> inferredTypes = checkParameterLength(invocationTypes, node);
+
+        for (int i = 0; i < inferredTypes.size(); i++) {
+            if (inferredTypes.get(i) instanceof ErrorType)
+                break;
+            ((FunctionExpression) node).getParameters().get(i).setType(inferredTypes.get(i));
+        }
+
+        return this.getReturnType();
     }
 
-    private Type checkParameterLength(ArrayList<Type> invocationTypes, ASTNode node) {
+    private ArrayList<Type> checkParameterLength(ArrayList<Type> invocationTypes, ASTNode node) {
         if (this.getParameters().size() == invocationTypes.size()) {
             return checkParameterTypes(invocationTypes, node);
-        } else
-            return new ErrorType(this.parameters.size() + " parameters required but " + invocationTypes.size() + " were passed", node);
+        } else {
+            ArrayList<Type> inferredTypes = new ArrayList<>();
+            inferredTypes.add(new ErrorType(this.parameters.size() + " parameters required but " + invocationTypes.size() + " were passed", node));
+            return inferredTypes;
+        }
     }
 
-    private Type checkParameterTypes(ArrayList<Type> invocationTypes, ASTNode node) {
+    private ArrayList<Type> checkParameterTypes(ArrayList<Type> invocationTypes, ASTNode node) {
+        ArrayList<Type> inferredTypes = new ArrayList<>();
+        Type definitionType, invocationType;
+
         for (int i = 0; i < this.getParameters().size(); i++) {
-            Type definitionType = this.getParameters().get(i).getType();
-            if (definitionType != invocationTypes.get(i)) {
-                return new ErrorType("Type " + invocationTypes.get(i) + " of passed parameter does not match type " + definitionType + " in definition", node);
+            definitionType = this.getParameters().get(i).getType();
+            invocationType = invocationTypes.get(i);
+
+            if (invocationType != definitionType) {
+                inferredTypes.add(invocationType.promote(definitionType, node));
+            } else {
+                inferredTypes.add(invocationType);
             }
         }
-        return this.returnType;
+        return inferredTypes;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -74,14 +95,6 @@ public class FunctionType extends AbstractType {
 
     @Override
     public Type returns(Type returnType, ASTNode node) {
-        return returnType.returns(this.getReturnType(), node);
-//        System.out.println(returnType);
-//        if(returnType instanceof RealType)
-//            return RealType.getInstance();
-//        if(returnType instanceof IntType);
-//        if (returnType != this.returnType) {
-//            return new ErrorType("The type returned: '" + returnType + "' does not match the return type: '" + this.getReturnType() + "'", node);
-//        }
-//        return this.returnType;
+        return this.getReturnType().returns(returnType, node);
     }
 }
