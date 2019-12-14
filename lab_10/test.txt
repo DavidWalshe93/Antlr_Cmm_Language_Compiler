@@ -22,7 +22,7 @@ int f(int pi, double pd, char pc) {   // offsets pi=0, pd=2, pc=6
   return pi;  // offset 2
 }
 
-void temp(double a, double b, int c, double d, char e, char f, double g) { // a=0, b=4, c=8, d=10, e=14, f=15, g=16
+int temp(double a, double b, int c, double d, char e, char f, double g) { // a=0, b=4, c=8, d=10, e=14, f=15, g=16
     int la;         // offset 0
     char lb;        // offset -2
     double lc;      // offset -3
@@ -30,6 +30,11 @@ void temp(double a, double b, int c, double d, char e, char f, double g) { // a=
     char le;        // offset -9
     double lf;      // offset -10
 
+    if(la == 10) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 // * Main program

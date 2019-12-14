@@ -1,4 +1,5 @@
 import ast.Program;
+import codegeneration.OffsetVisitor;
 import errorhandler.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
@@ -36,13 +37,15 @@ public class Main_Lab_05 {
 
         Program ast = createAST(args[0]);
         ast = runSemanticAnalysis(ast);
+        ast = runOffsetCodeCodeGeneration(ast);
 
         IntrospectorModel model = new IntrospectorModel("Program", ast);
-        new IntrospectorTree("Introspector", model);
+        new IntrospectorTree("Introspector", model, 800, 1000, 1, 8);
 
     }
 
-    private static Program createAST(String input_file) {
+
+    public static Program createAST(String input_file) {
         try {
             // create a lexer that feeds off of input CharStream
             CharStream input = CharStreams.fromFileName(input_file);
@@ -68,25 +71,35 @@ public class Main_Lab_05 {
         return null;
     }
 
-    private static Program runSemanticAnalysis(Program ast) {
-        if (ast != null) {
-            // * The AST is traversed
-            ast.accept(new IdentificationVisitor(), null);
-            ast.accept(new TypeCheckingVisitor(), null);
+    public static Program runSemanticAnalysis(Program ast) {
+        verifyAstIsNotNull(ast, "AST was null during semantic analysis phase");
+        ast.accept(new IdentificationVisitor(), null);
+        ast.accept(new TypeCheckingVisitor(), null);
 
-            if (ErrorHandler.getErrorHandler().anyError()) {
-                ErrorHandler.getErrorHandler().showErrors(System.err);
-                System.err.println("Program with semantic errors. No code was generated.");
-                exit();
-            }
-
-            System.out.println("Semantic Analysis complete.");
-
-        } else {
-            System.err.println("AST is null, cannot run semantic analysis");
+        if (ErrorHandler.getErrorHandler().anyError()) {
+            ErrorHandler.getErrorHandler().showErrors(System.err);
+            System.err.println("Program with semantic errors. No code was generated.");
             exit();
         }
 
+        System.out.println("Semantic Analysis complete.");
+
         return ast;
+    }
+
+    public static Program runOffsetCodeCodeGeneration(Program ast) {
+        verifyAstIsNotNull(ast, "AST was null during offset annotation phase");
+        ast.accept(new OffsetVisitor(), null);
+
+        System.out.println("Offset annotation complete.");
+
+        return ast;
+    }
+
+    public static void verifyAstIsNotNull(Program ast, String errorMsg) {
+        if (ast == null) {
+            System.err.println(errorMsg);
+            System.exit(-1);
+        }
     }
 }

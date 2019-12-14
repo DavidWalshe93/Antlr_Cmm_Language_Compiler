@@ -35,4 +35,10 @@ public interface Type extends ASTNode {
 
     Type promote(Type type, ASTNode astNode);
 
+    /**
+     * Code Generation
+     **/
+
+    int numberOfBytes();
+
 }

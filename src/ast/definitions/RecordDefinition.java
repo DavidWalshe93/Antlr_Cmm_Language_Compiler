@@ -23,14 +23,6 @@ public class RecordDefinition extends AbstractDefinition implements Statement {
         super(line, column, name, type);
     }
 
-    public int getOffset() {
-        return this.offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
     @Override
     public String toString() {
         return String.format("%s %s;\n", this.getType(), this.getName());
@@ -39,6 +31,20 @@ public class RecordDefinition extends AbstractDefinition implements Statement {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    /**
+     * Code Generation
+     **/
+
+    @Override
+    public int getOffset() {
+        return this.offset;
+    }
+
+    @Override
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
 }

@@ -15,7 +15,7 @@ public class VariableDefinition extends AbstractDefinition implements Statement 
     /**
      * The offset of the variable
      */
-    private int offset;
+    private int offset = 0;
 
     public VariableDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);

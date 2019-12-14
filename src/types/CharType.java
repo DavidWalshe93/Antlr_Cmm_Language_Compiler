@@ -32,6 +32,10 @@ public class CharType extends PrimitiveType {
         return "char";
     }
 
+    /**
+     * Semantic Analysis
+     **/
+
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
@@ -47,6 +51,7 @@ public class CharType extends PrimitiveType {
         if (type instanceof IntType)
             return IntType.getInstance();
         if (type instanceof CharType)
+            // todo - change to inttype
             return this;
         if (type instanceof ErrorType)
             return type;
@@ -64,6 +69,14 @@ public class CharType extends PrimitiveType {
         if (type instanceof ErrorType)
             return type;
         return new ErrorType(errorMsg, node);
+    }
+
+    /**
+     * Code Generation
+     **/
+
+    public int numberOfBytes() {
+        return 1;
     }
 
 }

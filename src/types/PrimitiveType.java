@@ -16,6 +16,7 @@ public abstract class PrimitiveType extends AbstractType {
         super(line, column);
     }
 
+    // todo - refactor to promote
     abstract Type typeInference(Type type, ASTNode node, String errorMsg);
 
     @Override

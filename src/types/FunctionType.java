@@ -97,4 +97,19 @@ public class FunctionType extends AbstractType {
     public Type returns(Type returnType, ASTNode node) {
         return this.getReturnType().returns(returnType, node);
     }
+
+    /**
+     * Code Generation
+     **/
+
+    @Override
+    public int numberOfBytes() {
+        int totalNumberOfBytes = 0;
+
+        for (Definition parameter : this.getParameters()) {
+            totalNumberOfBytes += parameter.getType().numberOfBytes();
+        }
+
+        return totalNumberOfBytes;
+    }
 }

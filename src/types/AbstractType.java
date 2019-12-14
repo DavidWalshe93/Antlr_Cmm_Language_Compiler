@@ -83,4 +83,12 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
             return type;
         return new ErrorType(type + " type cannot be promoted", astNode);
     }
+
+    /**
+     * Code Generation
+     **/
+    @Override
+    public int numberOfBytes() {
+        throw new UnsupportedOperationException("numberOfBytes is not implemented for " + this.getClass().getSimpleName());
+    }
 }

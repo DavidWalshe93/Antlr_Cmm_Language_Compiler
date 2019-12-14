@@ -30,6 +30,10 @@ public class IntType extends PrimitiveType {
         return "int";
     }
 
+    /**
+     * Semantic Analysis
+     **/
+
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
@@ -62,4 +66,12 @@ public class IntType extends PrimitiveType {
         return new ErrorType(errorMsg, node);
     }
 
+    /**
+     * Code Generation
+     **/
+
+    @Override
+    public int numberOfBytes() {
+        return 2;
+    }
 }

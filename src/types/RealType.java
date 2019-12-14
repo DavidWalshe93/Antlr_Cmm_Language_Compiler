@@ -30,6 +30,10 @@ public class RealType extends PrimitiveType {
         return "double";
     }
 
+    /**
+     * Semantic Analysis
+     **/
+
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
@@ -58,5 +62,14 @@ public class RealType extends PrimitiveType {
         if (type instanceof ErrorType)
             return type;
         return new ErrorType(errorMsg, node);
+    }
+
+    /**
+     * Code Generation
+     **/
+
+    @Override
+    public int numberOfBytes() {
+        return 4;
     }
 }

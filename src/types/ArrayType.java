@@ -52,6 +52,10 @@ public class ArrayType extends AbstractType {
             return this.getType() + "[" + this.getArraySize() + "]";
     }
 
+    /**
+     * Semantic Analysis
+     **/
+
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
@@ -70,5 +74,14 @@ public class ArrayType extends AbstractType {
             return new ErrorType("Arrays cannot be assigned", node);
         }
         return this.getType().assignment(type, node);
+    }
+
+    /**
+     * Code Generation
+     **/
+
+    @Override
+    public int numberOfBytes() {
+        return this.getType().numberOfBytes() * this.getArraySize();
     }
 }

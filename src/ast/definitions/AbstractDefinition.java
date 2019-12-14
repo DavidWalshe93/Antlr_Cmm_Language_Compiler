@@ -44,4 +44,14 @@ abstract class AbstractDefinition extends AbstractASTNode implements Definition 
         this.scope = scope;
     }
 
+    @Override
+    public int getOffset() {
+        throw new UnsupportedOperationException("Cannot get offset of " + this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void setOffset(int offset) {
+        throw new UnsupportedOperationException("Cannot set offset of " + this.getClass().getSimpleName());
+    }
+
 }
