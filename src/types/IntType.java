@@ -56,7 +56,7 @@ public class IntType extends PrimitiveType {
     }
 
     @Override
-    public Type typeInference(Type type, ASTNode node, String errorMsg) {
+    public Type typePromotion(Type type, ASTNode node, String errorMsg) {
         if (type instanceof RealType)
             return RealType.getInstance();
         if (type instanceof IntType)

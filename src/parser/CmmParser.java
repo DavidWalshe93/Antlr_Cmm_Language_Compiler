@@ -494,6 +494,10 @@ public class CmmParser extends Parser {
 		return _localctx;
 	}
 
+    public final TypeContext type() throws RecognitionException {
+        return type(0);
+    }
+
 	private TypeContext type(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
@@ -647,10 +651,6 @@ public class CmmParser extends Parser {
 		}
 		return _localctx;
 	}
-
-    public final TypeContext type() throws RecognitionException {
-        return type(0);
-    }
 
 	public final BlockContext block() throws RecognitionException {
 		BlockContext _localctx = new BlockContext(_ctx, getState());
@@ -1101,6 +1101,10 @@ public class CmmParser extends Parser {
 		}
 		return _localctx;
 	}
+
+    public final ExpressionContext expression() throws RecognitionException {
+        return expression(0);
+    }
 
 	private ExpressionContext expression(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
@@ -1846,10 +1850,6 @@ public class CmmParser extends Parser {
         public int getRuleIndex() {
             return RULE_type;
         }
-    }
-
-    public final ExpressionContext expression() throws RecognitionException {
-        return expression(0);
 	}
 
 	public static class Function_blockContext extends ParserRuleContext {

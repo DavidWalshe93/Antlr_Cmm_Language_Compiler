@@ -16,13 +16,12 @@ public abstract class PrimitiveType extends AbstractType {
         super(line, column);
     }
 
-    // todo - refactor to promote
-    abstract Type typeInference(Type type, ASTNode node, String errorMsg);
+    abstract Type typePromotion(Type type, ASTNode node, String errorMsg);
 
     @Override
     public Type assignment(Type type, ASTNode node) {
         String errorMsg = this + " cannot be assigned to " + type;
-        return this.typeInference(type, node, errorMsg);
+        return this.typePromotion(type, node, errorMsg);
     }
 
     @Override
@@ -31,7 +30,7 @@ public abstract class PrimitiveType extends AbstractType {
             return new ErrorType("Cannot return '" + this.getClass().getSimpleName() + "' if void is specified as the return type in function signature", node);
         }
         String errorMsg = "Cannot return '" + this + "' for function return signature of type '" + type + "'";
-        return typeInference(type, node, errorMsg);
+        return typePromotion(type, node, errorMsg);
     }
 
     @Override
@@ -63,6 +62,6 @@ public abstract class PrimitiveType extends AbstractType {
     @Override
     public Type promote(Type type, ASTNode node) {
         String errorMsg = this + " cannot be passed as " + type;
-        return typeInference(type, node, errorMsg);
+        return typePromotion(type, node, errorMsg);
     }
 }

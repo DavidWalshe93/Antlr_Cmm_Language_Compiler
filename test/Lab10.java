@@ -1,16 +1,15 @@
 import ast.Program;
 import ast.definitions.FunctionDefinition;
 import ast.definitions.VariableDefinition;
-import ast.statements.Statement;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import types.FunctionType;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -57,64 +56,81 @@ class Lab10 {
 
     @Test
     void globalsOffset() {
-        assertEquals(7, ast.getDefinitions().size());
-        assertEquals(0, ast.getDefinitions().get(Position.GLOBAL_GI.getPositionCode()).getOffset());
-        assertEquals(2, ast.getDefinitions().get(Position.GLOBAL_GD.getPositionCode()).getOffset());
-        assertEquals(6, ast.getDefinitions().get(Position.GLOBAL_GC.getPositionCode()).getOffset());
+        assertEquals(10, ast.getDefinitions().size());
+        assertEquals(0, ast.getDefinitions().get(CodeSegment.GLOBAL_GI.getPositionCode()).getOffset());
+        assertEquals(2, ast.getDefinitions().get(CodeSegment.GLOBAL_GD.getPositionCode()).getOffset());
+        assertEquals(6, ast.getDefinitions().get(CodeSegment.GLOBAL_GC.getPositionCode()).getOffset());
     }
 
     /**
      * Function f Tests
      **/
 
-    @Test
-    void fParamOffsets() {
-        assertEquals(3, ((FunctionType) ast.getDefinitions().get(Position.FUNC_F.getPositionCode()).getType()).getParameters().size());
-        assertEquals(0, ((FunctionType) ast.getDefinitions().get(Position.FUNC_F.getPositionCode()).getType()).getParameters().get(0).getOffset());
-        assertEquals(2, ((FunctionType) ast.getDefinitions().get(Position.FUNC_F.getPositionCode()).getType()).getParameters().get(1).getOffset());
-        assertEquals(6, ((FunctionType) ast.getDefinitions().get(Position.FUNC_F.getPositionCode()).getType()).getParameters().get(2).getOffset());
+    @ParameterizedTest(name = "Verifying f() parameter {0} has an offset of {1}")
+    @CsvSource({"0, 9",
+            "1, 5",
+            "2, 4"})
+    void fParamOffsets(int index, int expected) {
+        FunctionDefinition f = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_F.getPositionCode()));
+        FunctionType fType = (FunctionType) f.getType();
+        assertEquals(3, fType.getParameters().size());
+
+        assertEquals(expected, fType.getParameters().get(index).getOffset());
     }
 
-    @Test
-    void fLocalOffsets() {
-        ArrayList<Statement> f = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_F.getPositionCode())).getBody();
-        assertEquals(7, f.size());
-        assertEquals(0, ((VariableDefinition) f.get(0)).getOffset());
-        assertEquals(-4, ((VariableDefinition) f.get(1)).getOffset());
-        assertEquals(-6, ((VariableDefinition) f.get(2)).getOffset());
+    @ParameterizedTest(name = "Verifying f() local variable {0} has an offset of {1}")
+    @CsvSource({
+            "0, -4",
+            "1, -6,",
+            "2, -7"
+    })
+    void fLocalOffsets(int index, int expected) {
+        FunctionDefinition f = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_F.getPositionCode()));
+        assertEquals(7, f.getBody().size());
+        assertEquals(expected, ((VariableDefinition) f.getBody().get(index)).getOffset());
     }
 
     @Test
     void fReturnOffset() {
-        assertEquals(2, ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_F.getPositionCode())).getReturnType().numberOfBytes());
+        assertEquals(2, ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_F.getPositionCode())).getReturnType().numberOfBytes());
     }
 
     /**
      * Function temp Tests
      **/
 
-    @Test
-    void tempParamOffsets() {
-        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_TEMP.getPositionCode()));
+    @ParameterizedTest(name = "Verifying temp() parameter {0} has an offset of {1}")
+    @CsvSource({"0, 20",
+            "1, 16",
+            "2, 14",
+            "3, 10",
+            "4, 9",
+            "5, 8",
+            "6, 4"})
+    void tempParamOffsets(int index, int expected) {
+        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_TEMP.getPositionCode()));
         FunctionType tempType = (FunctionType) temp.getType();
-        int[] expected = {0, 4, 8, 10, 14, 15, 16};
-        for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i], tempType.getParameters().get(i).getOffset());
-        }
+        assertEquals(expected, tempType.getParameters().get(index).getOffset());
     }
 
-    @Test
-    void tempLocalOffsets() {
-        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_TEMP.getPositionCode()));
-        int[] expected = {0, -2, -3, -7, -9, -10};
-        for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i], ((VariableDefinition) temp.getBody().get(i)).getOffset());
-        }
+    @ParameterizedTest(name = "Verifying temp() local variable {1}:{2} has an offset of {1}")
+    @CsvSource({
+            "0, -2, la",
+            "1, -3, lb",
+            "2, -7, lc",
+            "3, -9, ld",
+            "4, -34, myDate",
+            "5, -35, le",
+            "6, -39, lf",
+    })
+    void tempLocalOffsets(int index, int expected, String varName) {
+        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_TEMP.getPositionCode()));
+        assertEquals(expected, ((VariableDefinition) temp.getBody().get(index)).getOffset());
     }
 
     @Test
     void tempReturnOffset() {
-        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_TEMP.getPositionCode()));
+        FunctionDefinition temp = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_TEMP.getPositionCode()));
         assertEquals(2, temp.getReturnType().numberOfBytes());
     }
 
@@ -124,36 +140,42 @@ class Lab10 {
 
     @Test
     void mainParamOffsets() {
-        assertEquals(0, ((FunctionType) ast.getDefinitions().get(Position.FUNC_MAIN.getPositionCode()).getType()).getParameters().size());
+        assertEquals(0, ((FunctionType) ast.getDefinitions().get(CodeSegment.FUNC_MAIN.getPositionCode()).getType()).getParameters().size());
     }
 
-    @Test
-    void mainLocalOffsets() {
-        ArrayList<Statement> main = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_MAIN.getPositionCode())).getBody();
-        assertEquals(10, main.size());
-        assertEquals(0, ((VariableDefinition) main.get(0)).getOffset());
-        assertEquals(-4, ((VariableDefinition) main.get(1)).getOffset());
-        assertEquals(-6, ((VariableDefinition) main.get(2)).getOffset());
+    @ParameterizedTest(name = "Verifying main() local variable {0} has an offset of {1}")
+    @CsvSource({
+            "0, -4",
+            "1, -6,",
+            "2, -7",
+    })
+    void mainLocalOffsets(int index, int expected) {
+        FunctionDefinition main = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_MAIN.getPositionCode()));
+        assertEquals(10, main.getBody().size());
+        assertEquals(expected, ((VariableDefinition) main.getBody().get(index)).getOffset());
     }
 
     @Test
     void mainReturnOffset() {
-        FunctionDefinition main = ((FunctionDefinition) ast.getDefinitions().get(Position.FUNC_MAIN.getPositionCode()));
+        FunctionDefinition main = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_MAIN.getPositionCode()));
         assertEquals(0, main.getReturnType().numberOfBytes());
     }
 
-    private enum Position {
+    private enum CodeSegment {
         GLOBAL_GI(0),
         GLOBAL_GD(1),
         GLOBAL_GC(2),
-        GLOBAL_DATE(3),
-        FUNC_F(4),
-        FUNC_TEMP(5),
-        FUNC_MAIN(6);
+        GLOBAL_SYMBOL(3),
+        GLOBAL_LOCATION(4),
+        GLOBAL_TIME(5),
+        GLOBAL_DATE(6),
+        FUNC_F(7),
+        FUNC_TEMP(8),
+        FUNC_MAIN(9);
 
         private final int positionCode;
 
-        Position(int positionCode) {
+        CodeSegment(int positionCode) {
             this.positionCode = positionCode;
         }
 

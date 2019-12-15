@@ -52,14 +52,14 @@ public class CharType extends PrimitiveType {
             return IntType.getInstance();
         if (type instanceof CharType)
             // todo - change to inttype
-            return this;
+            return IntType.getInstance();
         if (type instanceof ErrorType)
             return type;
         return new ErrorType(errorMsg, node);
     }
 
     @Override
-    public Type typeInference(Type type, ASTNode node, String errorMsg) {
+    public Type typePromotion(Type type, ASTNode node, String errorMsg) {
         if (type instanceof RealType)
             return RealType.getInstance();
         if (type instanceof IntType)

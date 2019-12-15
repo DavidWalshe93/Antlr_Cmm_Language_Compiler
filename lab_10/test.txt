@@ -3,17 +3,38 @@ int gi;             // offset 0
 double gd;          // offset 2
 char gc;            // offset 6
 
-typedef struct {
-    int day;       // offset 0
-    int month;     // offset 2
-    int year;      // offset 4
-} date;            // offset 12
+typedef struct {    // struct size 3
+    char letter1;   // offset 0
+    char letter2;   // offset 1
+    char letter3;   // offset 2
+} symbol;                                    // offset 9
+
+typedef struct {    // struct size 5
+    int localeTimeAdjustment;   // offset 0
+    type symbol country;        // offset 2
+} location;                                 // offset 14
+
+typedef struct {    // struct size 13
+    double second;  // offset 0
+    int minutes;    // offset 4
+    int hours;      // offset 6
+    type location locale; // offset 8
+} time;                                     // offset 27
+
+typedef struct {   // struct size 25
+    int day;                // offset 0
+    type symbol dayName;    // offset 2
+    int month;              // offset 5
+    type symbol monthName;  // offset 7
+    int year;               // offset 10
+    type time myTime;       // offset 12
+} date;                                     // offset 60
 
 // * Functions
 int f(int pi, double pd, char pc) {   // offsets pi=0, pd=2, pc=6
-  double ld;       // offset 0
-  int li;          // offset -4
-  char lc;         // offset -6
+  double ld;       // offset -4
+  int li;          // offset -6
+  char lc;         // offset -7
 
   li = pi;
   ld = pd;
@@ -21,14 +42,16 @@ int f(int pi, double pd, char pc) {   // offsets pi=0, pd=2, pc=6
 
   return pi;  // offset 2
 }
+ //             20       16     14        10      9       8         4
+int temp(double a, double b, int c, double d, char e, char f, double g) {
+    int la;         // offset -2
+    char lb;        // offset -3
+    double lc;      // offset -7
+    int ld;         // offset -9
+    type date myDate; // offset -15
+    char le;        // offset -16
+    double lf;      // offset -20
 
-int temp(double a, double b, int c, double d, char e, char f, double g) { // a=0, b=4, c=8, d=10, e=14, f=15, g=16
-    int la;         // offset 0
-    char lb;        // offset -2
-    double lc;      // offset -3
-    int ld;         // offset -7
-    char le;        // offset -9
-    double lf;      // offset -10
 
     if(la == 10) {
         return 1;

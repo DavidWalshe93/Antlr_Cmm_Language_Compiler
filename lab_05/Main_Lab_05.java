@@ -31,10 +31,6 @@ public class Main_Lab_05 {
             return;
         }
 
-//        IntrospectorModel model = new IntrospectorModel("Program", createAST(args[0]));
-//        System.out.println(model);
-//        new IntrospectorTree("Introspector", model);
-
         Program ast = createAST(args[0]);
         ast = runSemanticAnalysis(ast);
         ast = runOffsetCodeCodeGeneration(ast);
