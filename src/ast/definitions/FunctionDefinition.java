@@ -15,6 +15,9 @@ public class FunctionDefinition extends AbstractDefinition {
 
 
     private ArrayList<Statement> body;
+    private int localsByteSize = 0;
+    private int parametersByteSize = 0;
+    private int returnByteSize = 0;
 
     public FunctionDefinition(int line, int column, String name, Type returnType, ArrayList<Definition> parameters, ArrayList<Statement> body) {
         super(line, column, name, new FunctionType(line, column, returnType, parameters));
@@ -23,6 +26,20 @@ public class FunctionDefinition extends AbstractDefinition {
 
     public ArrayList<Statement> getBody() {
         return body;
+    }
+
+    public ArrayList<Statement> getStatements() {
+        ArrayList<Statement> statements = new ArrayList<>(body);
+
+        statements.removeIf(s -> (s instanceof VariableDefinition));
+        return statements;
+    }
+
+    public ArrayList<Statement> getLocalVariables() {
+        ArrayList<Statement> localVariables = new ArrayList<>(body);
+
+        localVariables.removeIf(s -> !(s instanceof VariableDefinition));
+        return localVariables;
     }
 
     public Type getReturnType() {
@@ -62,4 +79,31 @@ public class FunctionDefinition extends AbstractDefinition {
         return visitor.visit(this, param);
     }
 
+    public int getLocalsByteSize() {
+        return localsByteSize;
+    }
+
+    /**
+     * Code Generation
+     **/
+
+    public void setLocalsByteSize(int localsByteSize) {
+        this.localsByteSize = localsByteSize;
+    }
+
+    public int getParametersByteSize() {
+        return parametersByteSize;
+    }
+
+    public void setParametersByteSize(int parametersByteSize) {
+        this.parametersByteSize = parametersByteSize;
+    }
+
+    public int getReturnByteSize() {
+        return returnByteSize;
+    }
+
+    public void setReturnByteSize(int returnByteSize) {
+        this.returnByteSize = returnByteSize;
+    }
 }

@@ -8,8 +8,10 @@
 package ast;
 
 import ast.definitions.Definition;
+import ast.definitions.FunctionDefinition;
 import visitor.Visitor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program extends AbstractASTNode {
@@ -25,6 +27,20 @@ public class Program extends AbstractASTNode {
     public Program(int line, int column, List<Definition> definitions) {
         super(line, column);
         this.definitions = definitions;
+    }
+
+    public ArrayList<Definition> getGlobalVariables() {
+        ArrayList<Definition> globalVariables = new ArrayList<>(definitions);
+        globalVariables.removeIf(globalVariable -> (globalVariable instanceof FunctionDefinition));
+
+        return globalVariables;
+    }
+
+    public ArrayList<Definition> getGlobalDefinitions() {
+        ArrayList<Definition> definitions = new ArrayList<>(this.definitions);
+        definitions.removeIf(definition -> !(definition instanceof FunctionDefinition));
+
+        return definitions;
     }
 
     public List<Definition> getDefinitions() {

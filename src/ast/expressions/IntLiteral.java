@@ -19,6 +19,10 @@ public class IntLiteral extends AbstractExpression {
         this.setType(IntType.getInstance());
     }
 
+	public int getValue() {
+		return value;
+	}
+
     @Override
     public String toString() {
         return "" + value;

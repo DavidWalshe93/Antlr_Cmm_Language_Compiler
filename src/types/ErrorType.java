@@ -80,4 +80,19 @@ public class ErrorType extends AbstractType {
     public Type returns(Type type, ASTNode node) {
         return this;
     }
+
+	@Override
+	public int numberOfBytes() {
+		throw new RuntimeException("Do not call numberOfBytes on error types");
+	}
+
+	@Override
+	public char suffix() {
+		throw new RuntimeException("Do not call suffix on error types");
+	}
+
+	@Override
+	public String convertTo(Type conversionType) {
+		throw new RuntimeException("Do not call convertTo on error types");
+	}
 }

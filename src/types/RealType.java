@@ -72,4 +72,20 @@ public class RealType extends PrimitiveType {
     public int numberOfBytes() {
         return 4;
     }
+
+	@Override
+	public char suffix() {
+		return 'f';
+	}
+
+	@Override
+	public String convertTo(Type conversionType) {
+		if (conversionType instanceof RealType)
+			return "";
+		if (conversionType instanceof IntType)
+			return "f2i";
+		if (conversionType instanceof CharType)
+			return "f2i\n\ti2b";
+		throw new IllegalArgumentException("Conversion is not possible between " + this + " and " + conversionType);
+	}
 }

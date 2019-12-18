@@ -12,12 +12,11 @@ import visitor.Visitor;
  * College: Cork Institute of Technology
  */
 
-public class RecordDefinition extends AbstractDefinition implements Statement {
+public class RecordDefinition extends VariableDefinition implements Statement {
 
     /**
      * The offset of the variable
      */
-    private int offset;
 
     public RecordDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);
@@ -31,20 +30,6 @@ public class RecordDefinition extends AbstractDefinition implements Statement {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
-    }
-
-    /**
-     * Code Generation
-     **/
-
-    @Override
-    public int getOffset() {
-        return this.offset;
-    }
-
-    @Override
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
 }

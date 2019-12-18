@@ -1,4 +1,4 @@
-package codegeneration;
+package codegeneration.offset;
 
 /**
  * Author: David Walshe
@@ -11,11 +11,8 @@ package codegeneration;
 
 public class ReturnBytes {
 
-    private final int CONTROL_BYTE_SIZE = 4;
-
-    // todo public fields for
     private int localsByteSize = 0;
-    private int parametersByteSize = CONTROL_BYTE_SIZE;
+	private int parametersByteSize = 0;
     private int returnByteSize = 0;
     private State state;
 

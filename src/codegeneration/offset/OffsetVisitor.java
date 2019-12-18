@@ -1,9 +1,9 @@
-package codegeneration;
+package codegeneration.offset;
 
 import ast.definitions.Definition;
 import ast.definitions.FunctionDefinition;
+import ast.definitions.StructDefinition;
 import ast.definitions.VariableDefinition;
-import ast.expressions.Variable;
 import ast.statements.Statement;
 import types.FunctionType;
 import types.StructType;
@@ -22,6 +22,17 @@ public class OffsetVisitor extends AbstractVisitor<ReturnBytes, Void> {
 
     private int currentGlobalByteSum = 0;
 
+	@Override
+	public Void visit(StructDefinition structDefinition, ReturnBytes returnBytes) {
+		super.visit(structDefinition, null);
+		structDefinition.setOffset(currentGlobalByteSum);
+
+//        StructType st = (StructType) structDefinition.getType();
+//        this.currentGlobalByteSum += (st).getRecordFields().get(st.getRecordSequence().get(st.getRecordSequence().size()-1)).getOffset();
+
+		return null;
+	}
+
     @Override
     public Void visit(StructType structType, ReturnBytes returnBytes) {
         int currentByteOffset = 0;
@@ -31,6 +42,7 @@ public class OffsetVisitor extends AbstractVisitor<ReturnBytes, Void> {
             field.setOffset(currentByteOffset);
             currentByteOffset += field.getType().numberOfBytes();
         }
+	    this.currentGlobalByteSum += currentByteOffset;
         return null;
     }
 
@@ -57,22 +69,24 @@ public class OffsetVisitor extends AbstractVisitor<ReturnBytes, Void> {
 
         returnBytes.setState(State.LOCAL);
         for (Statement stmt : functionDefinition.getBody()) {
-            if (stmt instanceof VariableDefinition) {
-                stmt.accept(this, returnBytes);
+	        System.out.println(stmt.getClass().getSimpleName());
+	        stmt.accept(this, returnBytes);
+	        if (stmt instanceof VariableDefinition) {
                 returnBytes.addLocalByteSize(((VariableDefinition) stmt).getType().numberOfBytes());
-            } else {
-                // todo - recursive for if/while, implement in visit here.
-                stmt.accept(this, returnBytes);
-            }
+	        }
+	        // CHECK - What does return statement provide? Why do we need to be recursive for return?
+	        // todo - recursive for if/while, implement in visit here.
         }
-        // todo - if def is void ret bytesToReturn, bytesOfLocals, bytesOfParams
+	    functionDefinition.setLocalsByteSize(returnBytes.getLocalsByteSize());
+	    functionDefinition.setParametersByteSize(returnBytes.getParametersByteSize());
+	    functionDefinition.setReturnByteSize(returnBytes.getReturnByteSize());
         return null;
     }
 
-    public Void visit(Variable variable, ReturnBytes returnBytes) {
-        return null;
-    }
-
+	//    public Void visit(Variable variable, ReturnBytes returnBytes) {
+//        return null;
+//    }
+//
     @Override
     public Void visit(VariableDefinition variableDefinition, ReturnBytes returnBytes) {
         variableDefinition.getType().accept(this, returnBytes);
@@ -83,7 +97,7 @@ public class OffsetVisitor extends AbstractVisitor<ReturnBytes, Void> {
             if (returnBytes.getState() == State.LOCAL) {
                 variableDefinition.setOffset(returnBytes.getLocalsByteSize() - variableDefinition.getType().numberOfBytes());
             } else if (returnBytes.getState() == State.PARAM) {
-                variableDefinition.setOffset(returnBytes.getParametersByteSize());
+	            variableDefinition.setOffset(returnBytes.getParametersByteSize() + 4);
             }
         }
         return null;

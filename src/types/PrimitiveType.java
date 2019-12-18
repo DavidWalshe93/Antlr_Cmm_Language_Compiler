@@ -64,4 +64,5 @@ public abstract class PrimitiveType extends AbstractType {
         String errorMsg = this + " cannot be passed as " + type;
         return typePromotion(type, node, errorMsg);
     }
+
 }

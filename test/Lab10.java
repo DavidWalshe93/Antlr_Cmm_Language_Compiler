@@ -30,7 +30,7 @@ class Lab10 {
     static void afterAll() throws InterruptedException {
         Program ast = Main_Lab_05.createAST(testPath);
         ast = Main_Lab_05.runSemanticAnalysis(ast);
-        ast = Main_Lab_05.runOffsetCodeCodeGeneration(ast);
+	    ast = Main_Lab_05.runOffsetCodeGeneration(ast);
 
         IntrospectorModel model = new IntrospectorModel("Program", ast);
         new IntrospectorTree("Introspector", model, 800, 1000, 1, 8);
@@ -43,7 +43,7 @@ class Lab10 {
     void setUp() {
         ast = Main_Lab_05.createAST(testPath);
         ast = Main_Lab_05.runSemanticAnalysis(ast);
-        ast = Main_Lab_05.runOffsetCodeCodeGeneration(ast);
+	    ast = Main_Lab_05.runOffsetCodeGeneration(ast);
     }
 
     @AfterEach

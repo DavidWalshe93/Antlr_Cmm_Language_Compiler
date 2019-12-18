@@ -36,6 +36,7 @@ public class VoidType extends AbstractType {
      * Code Generation
      **/
 
+    // CHECK is returning 0 correct for type void
     @Override
     public int numberOfBytes() {
         return 0;

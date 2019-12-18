@@ -80,9 +80,16 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         return null;
     }
 
+	public Void visit(Cast cast, Type param) {
+		super.visit(cast, param);
+		//todo - check for both types to be primitive, implment in type hier, similar to arith, parathesis, etc.
+		cast.setType(cast.getCastType());
+
+		return null;
+	}
+
     @Override
     public Void visit(FunctionExpression functionExpression, Type param) {
-        // CHECK - 1) [type-checking] Implementation correct for functionExpression
         super.visit(functionExpression, param);
 
         ArrayList<Type> invocationTypes = new ArrayList<>();
@@ -98,18 +105,25 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         super.visit(dot, param);
         this.lValueHelper.calculatLValue(dot);
 
-        // CHECK - 3) [type-checking] Check if dot implementation is correct.
         dot.setType(dot.getRecord().getType().dot(dot.getFieldName(), dot));
         return null;
     }
 
     @Override
     public Void visit(Logic logic, Type param) {
-        super.visit(logic, param);
-        logic.setType(logic.getOperand1().getType().logic(logic.getOperand2().getType(), logic));
+	    super.visit(logic, param);
+	    logic.setType(logic.getOperand1().getType().logic(logic.getOperand2().getType(), logic));
 
-        return null;
+	    return null;
     }
+
+	@Override
+	public Void visit(Not not, Type param) {
+		super.visit(not, param);
+		not.setType(not.getOperand().getType());
+
+		return null;
+	}
 
     @Override
     public Void visit(Comparison comparison, Type param) {

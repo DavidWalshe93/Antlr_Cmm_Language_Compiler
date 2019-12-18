@@ -19,6 +19,10 @@ public class RealLiteral extends AbstractExpression {
         this.setType(RealType.getInstance());
     }
 
+	public double getValue() {
+		return value;
+	}
+
     @Override
     public String toString() {
         return "" + value;

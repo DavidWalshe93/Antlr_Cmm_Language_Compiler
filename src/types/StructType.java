@@ -62,7 +62,7 @@ public class StructType extends AbstractType {
 
     private String getRecordFieldsAsString() {
         StringBuilder statementBuilder = new StringBuilder();
-        recordFields.forEach((k, v) -> statementBuilder.append("\n    ").append(v));
+	    recordFields.forEach((k, v) -> statementBuilder.append("\nabc   ").append(v));
 
         return statementBuilder.toString();
     }

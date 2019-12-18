@@ -74,4 +74,20 @@ public class IntType extends PrimitiveType {
     public int numberOfBytes() {
         return 2;
     }
+
+	@Override
+	public char suffix() {
+		return 'i';
+	}
+
+	@Override
+	public String convertTo(Type conversionType) {
+		if (conversionType instanceof IntType)
+			return "";
+		if (conversionType instanceof RealType)
+			return "i2f";
+		if (conversionType instanceof CharType)
+			return "i2b";
+		throw new IllegalArgumentException("Conversion is not possible between " + this + " and " + conversionType);
+	}
 }

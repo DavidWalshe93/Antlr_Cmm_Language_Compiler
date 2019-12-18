@@ -87,8 +87,19 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
     /**
      * Code Generation
      **/
+
     @Override
     public int numberOfBytes() {
         throw new UnsupportedOperationException("numberOfBytes is not implemented for " + this.getClass().getSimpleName());
     }
+
+	@Override
+	public char suffix() {
+		throw new RuntimeException("Cannot call suffix on " + this.getClass().getSimpleName() + " types");
+	}
+
+	@Override
+	public String convertTo(Type conversionType) {
+		throw new IllegalArgumentException("Conversion is not possible between " + this + " and " + conversionType);
+	}
 }

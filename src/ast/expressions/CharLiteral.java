@@ -21,6 +21,10 @@ public class CharLiteral extends AbstractExpression {
         this.setType(CharType.getInstance());
     }
 
+	public char getValue() {
+		return value;
+	}
+
     @Override
     public String toString() {
         return "'" + value + "'";

@@ -18,6 +18,7 @@ program returns [Program ast]
     ;
 definitions returns [List<Definition> ast = new ArrayList<Definition>()]
     :   ( type_definition    { $ast.addAll($type_definition.ast); }
+    	| struct_definition  { $ast.add($struct_definition.ast); }
         | variable_definition   { $ast.addAll($variable_definition.ast); }
         | function_definition   { $ast.add($function_definition.ast); }
         )*
@@ -56,7 +57,9 @@ function_block returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     :   '{' v=variable_definition_block { $ast.addAll($v.ast); } b=block { $ast.addAll($b.ast); }'}'
     ;
 variable_definition_block returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
-    :   (v=variable_definition { for(Definition d: $v.ast) { $ast.add((Statement)d); } })*
+    :   ( v=variable_definition { for(Definition d: $v.ast) { $ast.add((Statement)d); } }
+    	| td=type_definition    { for(Definition d: $td.ast) { $ast.add((Statement)d); } }
+		| sd=struct_definition  { $ast.add($sd.ast); } )*
     ;
 block returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     :   (s=statement { $ast.addAll($s.ast); })*

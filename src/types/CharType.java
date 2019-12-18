@@ -74,9 +74,24 @@ public class CharType extends PrimitiveType {
     /**
      * Code Generation
      **/
-
+    @Override
     public int numberOfBytes() {
         return 1;
     }
 
+	@Override
+	public char suffix() {
+		return 'b';
+	}
+
+	@Override
+	public String convertTo(Type conversionType) {
+		if (conversionType instanceof CharType)
+			return "";
+		if (conversionType instanceof RealType)
+			return "b2i\n\ti2f";
+		if (conversionType instanceof IntType)
+			return "b2i";
+		throw new IllegalArgumentException("Conversion is not possible between " + this + " and " + conversionType);
+	}
 }

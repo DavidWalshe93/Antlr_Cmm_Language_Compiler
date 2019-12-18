@@ -1,5 +1,6 @@
 package ast.definitions;
 
+import ast.statements.Statement;
 import types.Type;
 import visitor.Visitor;
 
@@ -11,7 +12,7 @@ import visitor.Visitor;
  * College: Cork Institute of Technology
  */
 
-public class TypeDefinition extends AbstractDefinition {
+public class TypeDefinition extends AbstractDefinition implements Statement {
 
     public TypeDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);

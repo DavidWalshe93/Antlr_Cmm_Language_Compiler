@@ -1,49 +1,5 @@
-// * Global variables
-int gi;             // offset 0
-double gd;          // offset 2
-char gc;            // offset 6
 
-typedef struct {
-    int day;       // offset 0
-    int month;     // offset 2
-    int year;      // offset 4
-} date;            // offset 12
 
-// * Functions
-int f(int pi, double pd, char pc) {   // offsets pi=0, pd=2, pc=6
-  double ld;       // offset 0
-  int li;          // offset -4
-  char lc;         // offset -6
-
-  li = pi;
-  ld = pd;
-  lc = pc;
-
-  return pi;  // offset 2
-}
-
-void temp(double a, double b, int c, double d, char e, char f, double g) { // a=0, b=4, c=8, d=10, e=14, f=15, g=16
-    int la;         // offset 0
-    char lb;        // offset -2
-    double lc;      // offset -3
-    int ld;         // offset -7
-    char le;        // offset -9
-    double lf;      // offset -10
-
-}
-
-// * Main program
 void main() {
-  double ld;        // offset 0
-  int li;           // offset -4
-  char lc;          // offset -6
-
-  ld = 0.0;
-  li = 0;
-  lc = '0';
-
-  gi = 3 + li;
-  gc = lc;
-  gd = ld * 3.8;
-  f(gi, gd, gc);
+	int i;
 }

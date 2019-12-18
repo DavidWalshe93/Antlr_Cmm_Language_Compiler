@@ -1,5 +1,7 @@
 import ast.Program;
-import codegeneration.OffsetVisitor;
+import codegeneration.cg.CodeGenerator;
+import codegeneration.cg.ExecuteCGVisitor;
+import codegeneration.offset.OffsetVisitor;
 import errorhandler.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
@@ -33,7 +35,9 @@ public class Main_Lab_05 {
 
         Program ast = createAST(args[0]);
         ast = runSemanticAnalysis(ast);
-        ast = runOffsetCodeCodeGeneration(ast);
+	    ast = runOffsetCodeGeneration(ast);
+
+	    System.out.println(ast.getDefinitions().get(0).getClass().getSimpleName());
 
         IntrospectorModel model = new IntrospectorModel("Program", ast);
         new IntrospectorTree("Introspector", model, 800, 1000, 1, 8);
@@ -83,14 +87,22 @@ public class Main_Lab_05 {
         return ast;
     }
 
-    public static Program runOffsetCodeCodeGeneration(Program ast) {
-        verifyAstIsNotNull(ast, "AST was null during offset annotation phase");
-        ast.accept(new OffsetVisitor(), null);
+	public static Program runOffsetCodeGeneration(Program ast) {
+		verifyAstIsNotNull(ast, "AST was null during offset annotation phase");
+		ast.accept(new OffsetVisitor(), null);
 
-        System.out.println("Offset annotation complete.");
+		System.out.println("Offset annotation complete.");
 
-        return ast;
-    }
+		return ast;
+	}
+
+	public static Program runCodeGeneration(Program ast, String targetFile, String sourceFile) {
+		verifyAstIsNotNull(ast, "AST was null during code generation phase");
+		CodeGenerator codeGenerator = new CodeGenerator(targetFile, sourceFile);
+		ast.accept(new ExecuteCGVisitor(codeGenerator), null);
+
+		return ast;
+	}
 
     public static void verifyAstIsNotNull(Program ast, String errorMsg) {
         if (ast == null) {
