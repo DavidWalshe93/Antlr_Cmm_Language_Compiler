@@ -1,6 +1,7 @@
 package codegeneration.cg;
 
 import ast.expressions.*;
+import types.FunctionType;
 
 /**
  * Author: David Walshe
@@ -57,13 +58,15 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {       // CHE
 
 	@Override
 	public Void visit(FunctionExpression functionExpression, Void param) {
-		return super.visit(functionExpression, param);
-	}
-
-	@Override
-	public Void visit(Indexing indexing, Void param) {
-		indexing.accept(this.addressCGVisitor, null);
-		codeGenerator.load(indexing.getType());
+		FunctionType funcType = (FunctionType) functionExpression.getDefinition().getType();
+		for (int i = 0; i < functionExpression.getParameters().size(); i++) {
+			functionExpression.getParameters().get(i).accept(this, null);
+			System.out.println(functionExpression.getParameters().get(i).getType());
+			System.out.println(functionExpression.getParameters().get(i));
+			System.out.println(funcType.getParameters().get(i).getType());
+			this.codeGenerator.cast(functionExpression.getParameters().get(i).getType().convertTo(funcType.getParameters().get(i).getType()));
+		}
+		this.codeGenerator.call(functionExpression.getName());
 		return null;
 	}
 
@@ -100,21 +103,30 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {       // CHE
 	}
 
 	@Override
-	public Void visit(Dot dot, Void param) {
-		dot.accept(this.addressCGVisitor, null);
-		codeGenerator.load(dot.getType());
-		return null;
+	public Void visit(UnaryMinus unaryMinus, Void param) {
+		// todo - implement
+		return super.visit(unaryMinus, param);
 	}
 
 	@Override
-	public Void visit(UnaryMinus unaryMinus, Void param) {
-		return super.visit(unaryMinus, param);
+	public Void visit(Indexing indexing, Void param) {
+		indexing.accept(this.addressCGVisitor, null);
+		codeGenerator.load(indexing.getType());
+		return null;
 	}
 
 	@Override
 	public Void visit(Variable variable, Void param) {    // CHECK - is using a parameter correct?
 		variable.accept(this.addressCGVisitor, null);
-		codeGenerator.load(variable.getType());
+		this.codeGenerator.load(variable.getType());
+
+		return null;
+	}
+
+	@Override
+	public Void visit(Dot dot, Void param) {
+		dot.accept(this.addressCGVisitor, null);
+		codeGenerator.load(dot.getType());
 		return null;
 	}
 }

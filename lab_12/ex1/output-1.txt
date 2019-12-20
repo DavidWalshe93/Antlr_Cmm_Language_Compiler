@@ -1,7 +1,8 @@
 
 #source	"input-1.txt"
 
-	' * [10,real] v (offset 0)
+	' * Global variables
+	' * [10,double] v (offset 0)
 
 ' Invocation to the main function
 call main
@@ -9,11 +10,10 @@ halt
 
 
 #line	5
-
  main:
-	' * Parameters
-	' * Local variables
-	' * real value (offset -4)
+	' * Parameters:
+	' * Local variables:
+	' * double value (offset -4)
 	' * int i (offset -6)
 	' * int j (offset -8)
 	' * [4,[5,int]] w (offset -48)
@@ -28,6 +28,7 @@ halt
 	storei
 
 #line	13
+	' * Assignment
 	push	bp
 	pushi	-4
 	addi
@@ -41,15 +42,17 @@ halt
 	storef
 
 #line	15
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi
 	pushi	0
 	storei
-	' * While
 
 #line	16
+	' * While Loop
  label0:
+	' * While Conditional
 	push	bp
 	pushi	-6
 	addi
@@ -57,9 +60,10 @@ halt
 	pushi	10
 	lti
 	jz	label1
-	' * Body of the while statement
+	' * While Body
 
 #line	17
+	' * Assignment
 	pusha	0
 	push	bp
 	pushi	-6
@@ -104,9 +108,10 @@ halt
 	' * Write
 	pushb	32
 	outb
-	' * If statement
 
 #line	19
+	' * If Statement
+	' * If Conditional
 	push	bp
 	pushi	-6
 	addi
@@ -114,7 +119,7 @@ halt
 	pushi	2
 	modi
 	jz	label2
-	' * Body of the if branch
+	' * If Body
 
 #line	20
 	' * Write
@@ -137,7 +142,9 @@ halt
 	outb
 	jmp	label3
  label2:
-	' * Body of the else branch
+
+#line	22
+	' * Else Body
 
 #line	23
 	' * Write
@@ -166,6 +173,7 @@ halt
  label3:
 
 #line	25
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi
@@ -185,15 +193,17 @@ halt
 	outb
 
 #line	29
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi
 	pushi	0
 	storei
-	' * While
 
 #line	30
+	' * While Loop
  label4:
+	' * While Conditional
 	push	bp
 	pushi	-6
 	addi
@@ -201,18 +211,20 @@ halt
 	pushi	4
 	lti
 	jz	label5
-	' * Body of the while statement
+	' * While Body
 
 #line	31
+	' * Assignment
 	push	bp
 	pushi	-8
 	addi
 	pushi	0
 	storei
-	' * While
 
 #line	32
+	' * While Loop
  label6:
+	' * While Conditional
 	push	bp
 	pushi	-8
 	addi
@@ -220,9 +232,10 @@ halt
 	pushi	5
 	lti
 	jz	label7
-	' * Body of the while statement
+	' * While Body
 
 #line	33
+	' * Assignment
 	push	bp
 	pushi	-48
 	addi
@@ -279,6 +292,7 @@ halt
 	outb
 
 #line	35
+	' * Assignment
 	push	bp
 	pushi	-8
 	addi
@@ -298,6 +312,7 @@ halt
 	outb
 
 #line	38
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi

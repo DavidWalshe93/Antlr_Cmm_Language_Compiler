@@ -27,7 +27,8 @@ public class RecordDefinition extends VariableDefinition implements Statement {
         return String.format("%s %s;\n", this.getType(), this.getName());
     }
 
-    @Override
+
+	@Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }

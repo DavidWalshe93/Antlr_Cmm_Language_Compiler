@@ -1,22 +1,22 @@
 
-#source	"lab_11\input.txt"
+#source	"input.txt"
 
-
-' Invocation to the main function
-call main
-halt
-
-	' * Global Variables
+	' * Global variables
 	' * char c (offset 0)
 	' * int a (offset 1)
 	' * double r (offset 3)
 	' * int i (offset 7)
 
+' Invocation to the main function
+call main
+halt
+
+
 #line	6
  main:
 	' * Parameters:
-	' * Local Variables:
-	enter 0
+	' * Local variables:
+	enter	0
 
 #line	7
 	' * Assignment
@@ -217,4 +217,4 @@ halt
 	' * Write
 	pushb	10
 	outb
-	ret 0, 0, 0
+	ret	0, 0, 0

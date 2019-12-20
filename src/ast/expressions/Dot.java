@@ -21,6 +21,10 @@ public class Dot extends AbstractExpression {
         this.fieldName = fieldName;
     }
 
+	public Variable getRecordAsVariable() {
+		return (Variable) this.record;
+	}
+
     public Expression getRecord() {
         return record;
     }

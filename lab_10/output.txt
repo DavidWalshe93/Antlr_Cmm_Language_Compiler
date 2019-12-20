@@ -1,6 +1,10 @@
 
 #source	"input.txt"
 
+	' * Global variables
+	' * int gi (offset 0)
+	' * double gd (offset 2)
+	' * char gc (offset 6)
 
 ' Invocation to the main function
 call main
@@ -8,11 +12,19 @@ halt
 
 
 #line	7
-
  f:
+	' * Parameters:
+	' * int pi (offset 9)
+	' * double pd (offset 5)
+	' * char pc (offset 4)
+	' * Local variables:
+	' * double ld (offset -4)
+	' * int li (offset -6)
+	' * char lc (offset -7)
 	enter	7
 
 #line	12
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi
@@ -23,6 +35,7 @@ halt
 	storei
 
 #line	13
+	' * Assignment
 	push	bp
 	pushi	-4
 	addi
@@ -33,6 +46,7 @@ halt
 	storef
 
 #line	14
+	' * Assignment
 	push	bp
 	pushi	-7
 	addi
@@ -51,11 +65,16 @@ halt
 	ret	2, 7, 7
 
 #line	20
-
  main:
+	' * Parameters:
+	' * Local variables:
+	' * double ld (offset -4)
+	' * int li (offset -6)
+	' * char lc (offset -7)
 	enter	7
 
 #line	25
+	' * Assignment
 	push	bp
 	pushi	-4
 	addi
@@ -63,6 +82,7 @@ halt
 	storef
 
 #line	26
+	' * Assignment
 	push	bp
 	pushi	-6
 	addi
@@ -70,6 +90,7 @@ halt
 	storei
 
 #line	27
+	' * Assignment
 	push	bp
 	pushi	-7
 	addi
@@ -77,6 +98,7 @@ halt
 	storeb
 
 #line	29
+	' * Assignment
 	pusha	0
 	pushi	3
 	push	bp
@@ -87,6 +109,7 @@ halt
 	storei
 
 #line	30
+	' * Assignment
 	pusha	6
 	push	bp
 	pushi	-7
@@ -95,6 +118,7 @@ halt
 	storeb
 
 #line	31
+	' * Assignment
 	pusha	2
 	push	bp
 	pushi	-4

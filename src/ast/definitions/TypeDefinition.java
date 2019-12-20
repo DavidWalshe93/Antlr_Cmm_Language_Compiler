@@ -14,6 +14,18 @@ import visitor.Visitor;
 
 public class TypeDefinition extends AbstractDefinition implements Statement {
 
+	private int offset;
+
+	@Override
+	public int getOffset() {
+		return offset;
+	}
+
+	@Override
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
     public TypeDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);
     }

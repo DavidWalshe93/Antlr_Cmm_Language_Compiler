@@ -3,6 +3,8 @@ package codegeneration.cg;
 import ast.expressions.Dot;
 import ast.expressions.Indexing;
 import ast.expressions.Variable;
+import types.IntType;
+import types.StructType;
 
 /**
  * Author: David Walshe
@@ -29,28 +31,27 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 		codeGenerator.push(indexing.getType().numberOfBytes());
 		codeGenerator.mul(indexing.getArrayIndex().getType());
 		codeGenerator.add(indexing.getArrayIndex().getType());
-//        this.codeGenerator.pushAddress(indexing);
 
 		return null;
 	}
 
 	@Override
 	public Void visit(Dot dot, Void param) {
-//        System.out.println(((StructType)dot.getRecord().getType()).getRecordField(dot.getFieldName()).);
-		System.out.println("" + dot.getRecord().getClass().getSimpleName()); //.getType()).getRecordField(dot.getFieldName()));
 		dot.getRecord().accept(this, null);
-//        dot.getRecord().accept(this, null);
-//        this.codeGenerator.pushAddress((Variable) dot.getRecord());
-//        this.codeGenerator.push(dot.getRecord().getType().getRecordField(dot.getFieldName()).getOffset());
-		//this.codeGenerator.push(((StructType)dot.getRecord().getType()).getRecordField(dot.getFieldName()).getOffset());
-		//this.codeGenerator.add(dot.getRecord().getType());
-
+		this.codeGenerator.push(((StructType) dot.getRecord().getType()).getRecordField(dot.getFieldName()).getOffset());
+		this.codeGenerator.add(IntType.getInstance());
 		return null;
 	}
 
 	@Override
 	public Void visit(Variable variable, Void param) {
-		this.codeGenerator.pushAddress(variable);
+		if (variable.getDefinition().getScope() == 0) {
+			this.codeGenerator.pushAddress(variable);
+		} else {
+			this.codeGenerator.pushBp();
+			this.codeGenerator.push(variable.getDefinition().getOffset());
+			this.codeGenerator.add(IntType.getInstance());
+		}
 
 		return null;
 	}

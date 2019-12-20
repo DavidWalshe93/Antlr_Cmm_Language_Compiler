@@ -1,0 +1,32 @@
+// * Global variables
+int gi, gi1, gi2;
+double gd, gd1, gd2;
+char gc, gc1, gc2;
+int[3][3] ga, ga2, ga3;
+typedef double[2][2][2] td;
+type td t1, t2, t3;
+struct {
+	int a;
+	double b;
+	char c;
+} record;
+type record s1, s2, s3;
+
+
+// * Main program
+void main() {
+	int li, li1, li2;
+    double ld, ld1, ld2;
+    char lc, lc1, lc2;
+    int[3][3] la, la2, la3;
+    typedef double[2][2][2] ltd;
+    type ltd t1, t2, t3;
+    struct {
+    	int a;
+    	double b;
+    	char c;
+    } lrecord;
+    type lrecord s1, s2, s3;
+
+
+}

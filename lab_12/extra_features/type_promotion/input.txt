@@ -1,0 +1,15 @@
+double sum(int a, int b) {
+	int temp;
+	temp = a + b;
+	return temp; // promotion of the return value (int to double)
+}
+
+void main() {
+	char character;
+	int integer;
+	double real;
+	character = '0';
+	integer = '0'; 					// char to int
+	sum(character, character); 		// arguments are promoted
+	real = integer + character; 	// character is promoted to int
+}

@@ -2,7 +2,6 @@ package types;
 
 import ast.ASTNode;
 import ast.definitions.Definition;
-import ast.expressions.FunctionExpression;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -50,31 +49,21 @@ public class FunctionType extends AbstractType {
 
     @Override
     public Type parenthesis(ArrayList<Type> invocationTypes, ASTNode node) {
-        // CHECK - 1) [type-checking] Implementation correct for functionExpression
 
-        ArrayList<Type> inferredTypes = checkParameterLength(invocationTypes, node);
-
-        for (int i = 0; i < inferredTypes.size(); i++) {
-            if (inferredTypes.get(i) instanceof ErrorType)
-                break;
-            ((FunctionExpression) node).getParameters().get(i).setType(inferredTypes.get(i));
-        }
+	    checkParameterLength(invocationTypes, node);
 
         return this.getReturnType();
     }
 
-    private ArrayList<Type> checkParameterLength(ArrayList<Type> invocationTypes, ASTNode node) {
+	private void checkParameterLength(ArrayList<Type> invocationTypes, ASTNode node) {
         if (this.getParameters().size() == invocationTypes.size()) {
-            return checkParameterTypes(invocationTypes, node);
+	        checkParameterTypes(invocationTypes, node);
         } else {
-            ArrayList<Type> inferredTypes = new ArrayList<>();
-            inferredTypes.add(new ErrorType(this.parameters.size() + " parameters required but " + invocationTypes.size() + " were passed", node));
-            return inferredTypes;
+	        new ErrorType(this.parameters.size() + " parameters required but " + invocationTypes.size() + " were passed", node);
         }
     }
 
-    private ArrayList<Type> checkParameterTypes(ArrayList<Type> invocationTypes, ASTNode node) {
-        ArrayList<Type> inferredTypes = new ArrayList<>();
+	private void checkParameterTypes(ArrayList<Type> invocationTypes, ASTNode node) {
         Type definitionType, invocationType;
 
         for (int i = 0; i < this.getParameters().size(); i++) {
@@ -82,12 +71,9 @@ public class FunctionType extends AbstractType {
             invocationType = invocationTypes.get(i);
 
             if (invocationType != definitionType) {
-                inferredTypes.add(invocationType.promote(definitionType, node));
-            } else {
-                inferredTypes.add(invocationType);
+	            invocationType.promote(definitionType, node);
             }
         }
-        return inferredTypes;
     }
 
     // -----------------------------------------------------------------------------------------------------------------

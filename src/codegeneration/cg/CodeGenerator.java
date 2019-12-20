@@ -17,12 +17,13 @@ import java.io.PrintWriter;
  * College: Cork Institute of Technology
  */
 
-public class CodeGenerator implements CG {
+public class CodeGenerator {
 
 	/**
 	 * The output file
 	 */
 	private PrintWriter out;
+	private int labels = 0;
 
 	public CodeGenerator(String outputFilename, String sourceFilename) {
 		try {
@@ -31,41 +32,62 @@ public class CodeGenerator implements CG {
 			System.err.println("Error opening the file " + outputFilename + ".");
 			System.exit(-1);
 		}
-		this.source(sourceFilename);
+		String osSeparator = System.getProperty("file.separator");
+		String source = sourceFilename;
+		try {
+			if (sourceFilename.contains(osSeparator))
+				source = sourceFilename.substring(sourceFilename.lastIndexOf(osSeparator) + 1);
+			else if (sourceFilename.contains("/"))
+				source = sourceFilename.substring(sourceFilename.lastIndexOf("/") + 1);
+		} catch (Exception e) {
+			source = sourceFilename;
+			System.out.println(e.toString());
+		}
+		this.source(source);
 	}
 
-	@Override
+	public void close() {
+		out.close();
+	}
+
+	
 	public void source(String infilename) {
 		out.println("\n#source\t\"" + infilename + "\"\n");
 		out.flush();
 	}
 
-	@Override
+
 	public void line(ASTNode node) {
 		out.println("\n#line\t" + node.getLine());
 		out.flush();
 	}
 
-	@Override
+
 	public void newline() {
 		out.println();
 		out.flush();
 	}
 
 
-	@Override
+	public void offset(Definition definition) {
+		out.println(" (offset " + definition.getOffset() + ")");
+		out.flush();
+	}
+
+
+	
 	public void commentln(String message) {
 		out.println("\t' * " + message + "");
 		out.flush();
 	}
 
-	@Override
+
 	public void comment(String message) {
 		out.print("\t' * " + message + "");
 		out.flush();
 	}
 
-	@Override
+
 	public void mainCall() {
 		out.println("\n' Invocation to the main function");
 		out.println("call main");
@@ -73,93 +95,121 @@ public class CodeGenerator implements CG {
 		out.flush();
 	}
 
-	@Override
+
 	public void push(char constant) {
 		out.println("\tpushb\t" + (int) constant + "");
 		out.flush();
 	}
 
-	@Override
+
 	public void push(int constant) {
 		out.println("\tpushi\t" + constant + "");
 		out.flush();
 	}
 
-	@Override
+
 	public void push(double constant) {
 		out.println("\tpushf\t" + constant + "");
 		out.flush();
 	}
 
-	@Override
 	public void pusha(int offset) {
 		out.println("\tpusha\t" + offset + "");
 		out.flush();
 	}
 
-	@Override
+
 	public void load(Type type) {
 		out.println("\tload" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void store(Type type) {
 		out.println("\tstore" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+	public void pop(Type type) {
+		out.println("\tpop" + type.suffix());
+	}
+
+	
 	public void output(Type type) {
 		out.println("\tout" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void in(Type type) {
 		out.println("\tin" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void varDef(VariableDefinition variableDefinition) {
-		out.println(" " + variableDefinition.getName() + " (offset " + variableDefinition.getOffset() + ")");
+		out.print(" " + variableDefinition.getName());
+		this.offset(variableDefinition);
 		out.flush();
 	}
 
 	public void recordDef(RecordDefinition recordDefinition) {
-		this.commentln("  |-- " + recordDefinition.getType() + " " + recordDefinition.getName() + " (offset " + recordDefinition.getOffset() + ")");
+		out.print(recordDefinition.getName());
+		out.flush();
 	}
 
-	@Override
+	
 	public void funcDef(FunctionDefinition functionDefinition) {
 		out.println(" " + functionDefinition.getName() + ":");
 		out.flush();
 	}
 
-	@Override
+
 	public void enter(int localByteSize) {
-		out.println("\tenter " + Math.abs(localByteSize));
+		out.println("\tenter\t" + Math.abs(localByteSize));
 	}
 
-	@Override
-	public void ret(int localsByteSize, int parametersByteSize, int returnByteSize) {
-		out.println("\tret " + returnByteSize +
-				", " + localsByteSize +
+	public void call(String funcName) {
+		out.println("\tcall\t" + funcName);
+		out.flush();
+	}
+
+
+	public void ret(int returnByteSize, int localsByteSize, int parametersByteSize) {
+		out.println("\tret\t" + returnByteSize +
+				", " + Math.abs(localsByteSize) +
 				", " + parametersByteSize);
 		out.flush();
 
 	}
 
-	@Override
+
 	public void structDef(StructDefinition structDefinition) {
-		this.commentln("struct " + structDefinition.getName());
+		out.print(" " + structDefinition.getName());
+		this.offset(structDefinition);
+		out.flush();
 	}
 
-	@Override
+	public void typeDef(TypeDefinition typeDefinition) {
+		out.print(" " + typeDefinition.getName());
+		this.offset(typeDefinition);
+		out.flush();
+	}
+
+
+	public void print(String string) {
+		out.print(string);
+		out.flush();
+	}
+
+	
 	public void pushAddress(Variable variable) {
-		Definition definition = variable.getDefinition();
-		this.pusha(definition.getOffset());
+		this.pusha(variable.getDefinition().getOffset());
+	}
+
+
+	public void pushBp() {
+		out.println("\tpush\tbp");
 	}
 
 	public void add(Type type) {
@@ -209,43 +259,43 @@ public class CodeGenerator implements CG {
 		}
 	}
 
-	@Override
+
 	public void gt(Type type) {
 		out.println("\tgt" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void lt(Type type) {
 		out.println("\tlt" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void ge(Type type) {
 		out.println("\tge" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void le(Type type) {
 		out.println("\tle" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void eq(Type type) {
 		out.println("\teq" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void ne(Type type) {
 		out.println("\tne" + type.suffix());
 		out.flush();
 	}
 
-	@Override
+
 	public void comparison(String operator, Type type) {
 		switch (operator) {
 			case ">=":
@@ -271,25 +321,25 @@ public class CodeGenerator implements CG {
 		}
 	}
 
-	@Override
+
 	public void and(Type type) {
 		out.println("\tand");
 		out.flush();
 	}
 
-	@Override
+
 	public void or(Type type) {
 		out.println("\tor");
 		out.flush();
 	}
 
-	@Override
+
 	public void not(Type type) {
 		out.println("\tnot");
 		out.flush();
 	}
 
-	@Override
+
 	public void logic(String operator, Type type) {
 		switch (operator) {
 			case "&&":
@@ -306,7 +356,7 @@ public class CodeGenerator implements CG {
 		}
 	}
 
-	@Override
+
 	public void cast(String castCommand) {
 		if (!castCommand.equals("")) {
 			out.println("\t" + castCommand);
@@ -314,13 +364,13 @@ public class CodeGenerator implements CG {
 		}
 	}
 
-	@Override
+
 	public void arrayNotationBegin(ArrayType arrayType) {
 		out.print("[" + arrayType.getArraySize() + ",");
 		out.flush();
 	}
 
-	@Override
+
 	public void arrayNotationEnd(ArrayType arrayType) {
 		out.print("]");
 		out.flush();
@@ -331,5 +381,31 @@ public class CodeGenerator implements CG {
 		out.flush();
 	}
 
+	public int getLabels(int howMany) {
+		int temp = this.labels;
+		this.labels += howMany;
+
+		return temp;
+	}
+
+	public void label(int label) {
+		out.println(" label" + label + ":");
+		out.flush();
+	}
+
+	public void jz(int label) {
+		out.println("\tjz\tlabel" + label);
+		out.flush();
+	}
+
+	public void jnz(int label) {
+		out.println("\tjz\tlabel" + label);
+		out.flush();
+	}
+
+	public void jmp(int label) {
+		out.println("\tjmp\tlabel" + label);
+		out.flush();
+	}
 
 }

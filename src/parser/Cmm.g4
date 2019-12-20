@@ -79,7 +79,7 @@ statement returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     ;
 if_statement returns [ArrayList<Statement> ast = new ArrayList<Statement>()]
     :   'if' cb1=condition_block            { $ast.add(new If($cb1.start.getLine(), $cb1.start.getCharPositionInLine()+1, $cb1.exp, $cb1.stmts));}
-        ('else' sb=statement_block          { $ast.add(new Else($sb.start.getLine(), $sb.start.getCharPositionInLine()+1, $sb.ast)); })?
+        ('else' sb=statement_block          { $ast.add(new Else($sb.start.getLine(), $sb.start.getCharPositionInLine()+1, $sb.ast)); ((If)$ast.get(0)).setElse((Else)$ast.get(1)); })?
     ;
 while_statement returns [Statement ast]
     :   'while' cb=condition_block  { $ast = new While($cb.start.getLine(), $cb.start.getCharPositionInLine()+1, $cb.exp, $cb.stmts); }

@@ -504,10 +504,6 @@ public class CmmParser extends Parser {
 		return _localctx;
 	}
 
-	public final TypeContext type() throws RecognitionException {
-		return type(0);
-	}
-
 	private TypeContext type(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
@@ -685,6 +681,10 @@ public class CmmParser extends Parser {
 			exitRule();
 		}
 		return _localctx;
+	}
+
+	public final TypeContext type() throws RecognitionException {
+		return type(0);
 	}
 
 	public final BlockContext block() throws RecognitionException {
@@ -867,6 +867,7 @@ public class CmmParser extends Parser {
 						setState(207);
 						((If_statementContext) _localctx).sb = statement_block();
 						_localctx.ast.add(new Else((((If_statementContext) _localctx).sb != null ? (((If_statementContext) _localctx).sb.start) : null).getLine(), (((If_statementContext) _localctx).sb != null ? (((If_statementContext) _localctx).sb.start) : null).getCharPositionInLine() + 1, ((If_statementContext) _localctx).sb.ast));
+						((If) _localctx.ast.get(0)).setElse((Else) _localctx.ast.get(1));
 					}
 					break;
 				}
@@ -1135,10 +1136,6 @@ public class CmmParser extends Parser {
 			exitRule();
 		}
 		return _localctx;
-	}
-
-	public final ExpressionContext expression() throws RecognitionException {
-		return expression(0);
 	}
 
 	private ExpressionContext expression(int _p) throws RecognitionException {
@@ -1894,6 +1891,10 @@ public class CmmParser extends Parser {
 		public int getRuleIndex() {
 			return RULE_type;
 		}
+	}
+
+	public final ExpressionContext expression() throws RecognitionException {
+		return expression(0);
 	}
 
 	public static class Function_blockContext extends ParserRuleContext {

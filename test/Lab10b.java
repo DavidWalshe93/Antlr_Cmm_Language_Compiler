@@ -5,19 +5,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Author: David Walshe
- * Date: 18/12/2019
+ * Date: 19/12/2019
  * Subject: Programming Language Design
  * Program: Software Architecture and Design
  * College: Cork Institute of Technology
  */
 
-public class Lab12a {
+public class Lab10b {
 
-	private static String sourcePath = "lab_12\\ex1\\input-1.txt";
-	private static String targetPath = "lab_12\\ex1\\test_output-1.txt";
-	private static String comparisonPath = "lab_12\\ex1\\output-1.txt";
-
-	private static final int fileSize = 326;
+	private static final int fileSize = 140;
+	private static String sourcePath = "lab_10\\input.txt";
+	private static String targetPath = "lab_10\\test_output.txt";
+	private static String comparisonPath = "lab_10\\output.txt";
 
 	@AfterAll
 	static void afterAll() throws InterruptedException {
@@ -44,5 +43,4 @@ public class Lab12a {
 			fail();
 		}
 	}
-
 }

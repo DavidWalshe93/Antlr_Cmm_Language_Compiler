@@ -15,8 +15,6 @@ import semantic.TypeCheckingVisitor;
 
 import java.io.IOException;
 
-import static javafx.application.Platform.exit;
-
 /**
  * Author: David Walshe
  * Date: 19/10/2019
@@ -27,13 +25,15 @@ import static javafx.application.Platform.exit;
 
 public class Main_Lab_05 {
 
+	private static boolean runWithErrors;
+
     public static void main(String... args) {
         if (args.length < 1) {
             System.err.println("Please, pass me the input file.");
             return;
         }
 
-        Program ast = createAST(args[0]);
+	    Program ast = createAST(args[0], false);
         ast = runSemanticAnalysis(ast);
 	    ast = runOffsetCodeGeneration(ast);
 
@@ -45,7 +45,8 @@ public class Main_Lab_05 {
     }
 
 
-    public static Program createAST(String input_file) {
+	public static Program createAST(String input_file, boolean errorsOff) {
+		runWithErrors = errorsOff;
         try {
             // create a lexer that feeds off of input CharStream
             CharStream input = CharStreams.fromFileName(input_file);
@@ -59,14 +60,15 @@ public class Main_Lab_05 {
 
             if (parser.getNumberOfSyntaxErrors() > 0) {
                 System.err.println("Program with syntax errors. No code was generated.");
-                exit();
+	            if (!runWithErrors)
+		            System.exit(-2);
             }
             System.out.println("Syntactical Analysis complete.");
             return ast;
 
         } catch (IOException e) {
             System.out.println(String.format("Couldn't find input file %s. Error: %s", input_file, e));
-            exit();
+	        System.exit(-1);
         }
         return null;
     }
@@ -79,7 +81,8 @@ public class Main_Lab_05 {
         if (ErrorHandler.getErrorHandler().anyError()) {
             ErrorHandler.getErrorHandler().showErrors(System.err);
             System.err.println("Program with semantic errors. No code was generated.");
-            exit();
+	        if (!runWithErrors)
+		        System.exit(-3);
         }
 
         System.out.println("Semantic Analysis complete.");
@@ -106,8 +109,7 @@ public class Main_Lab_05 {
 
     public static void verifyAstIsNotNull(Program ast, String errorMsg) {
         if (ast == null) {
-            System.err.println(errorMsg);
-            System.exit(-1);
+	        throw new IllegalStateException(errorMsg);
         }
     }
 }

@@ -145,5 +145,4 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         }
         return null;
     }
-
 }

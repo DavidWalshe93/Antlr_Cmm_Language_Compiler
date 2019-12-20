@@ -14,9 +14,19 @@ import java.util.ArrayList;
 
 public class Else extends Conditional implements Statement {
 
+	private int label;
+
     public Else(int line, int column, ArrayList<Statement> statements) {
         super(line, column, null, statements);
     }
+
+	public int getLabel() {
+		return label;
+	}
+
+	public void setLabel(int label) {
+		this.label = label;
+	}
 
     @Override
     public String toString() {

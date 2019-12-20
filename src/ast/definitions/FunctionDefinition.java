@@ -31,14 +31,14 @@ public class FunctionDefinition extends AbstractDefinition {
     public ArrayList<Statement> getStatements() {
         ArrayList<Statement> statements = new ArrayList<>(body);
 
-        statements.removeIf(s -> (s instanceof VariableDefinition));
+	    statements.removeIf(s -> (s instanceof Definition));
         return statements;
     }
 
     public ArrayList<Statement> getLocalVariables() {
         ArrayList<Statement> localVariables = new ArrayList<>(body);
 
-        localVariables.removeIf(s -> !(s instanceof VariableDefinition));
+	    localVariables.removeIf(s -> !(s instanceof Definition));
         return localVariables;
     }
 
@@ -79,13 +79,14 @@ public class FunctionDefinition extends AbstractDefinition {
         return visitor.visit(this, param);
     }
 
-    public int getLocalsByteSize() {
-        return localsByteSize;
-    }
 
-    /**
-     * Code Generation
-     **/
+	/**
+	 * Code Generation
+	 **/
+
+	public int getLocalsByteSize() {
+		return localsByteSize;
+	}
 
     public void setLocalsByteSize(int localsByteSize) {
         this.localsByteSize = localsByteSize;

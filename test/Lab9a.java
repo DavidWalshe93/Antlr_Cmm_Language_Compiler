@@ -1,23 +1,22 @@
-import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 /**
  * Author: David Walshe
- * Date: 18/12/2019
+ * Date: 19/12/2019
  * Subject: Programming Language Design
  * Program: Software Architecture and Design
  * College: Cork Institute of Technology
  */
 
-public class Lab12a {
+import org.junit.jupiter.api.*;
 
-	private static String sourcePath = "lab_12\\ex1\\input-1.txt";
-	private static String targetPath = "lab_12\\ex1\\test_output-1.txt";
-	private static String comparisonPath = "lab_12\\ex1\\output-1.txt";
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-	private static final int fileSize = 326;
+public class Lab9a {
+
+	private static final int fileSize = 408;
+	private static String sourcePath = "lab_09\\high-level-1.txt";
+	private static String targetPath = "lab_09\\test-low-level-mapl-1.txt";
+	private static String comparisonPath = "lab_09\\low-level-mapl-1.txt";
 
 	@AfterAll
 	static void afterAll() throws InterruptedException {
@@ -46,3 +45,4 @@ public class Lab12a {
 	}
 
 }
+

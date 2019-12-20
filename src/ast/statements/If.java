@@ -15,9 +15,19 @@ import java.util.ArrayList;
 
 public class If extends Conditional implements Statement {
 
+	private Else _else;
+
     public If(int line, int column, Expression condition, ArrayList<Statement> statements) {
         super(line, column, condition, statements);
     }
+
+	public Else getElse() {
+		return _else;
+	}
+
+	public void setElse(Else _else) {
+		this._else = _else;
+	}
 
     @Override
     public String toString() {

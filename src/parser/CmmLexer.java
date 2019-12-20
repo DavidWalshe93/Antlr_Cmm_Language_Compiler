@@ -26,11 +26,6 @@ public class CmmLexer extends Lexer {
 			"DIGIT", "INT_CONSTANT", "SCIENCE_NOTATION", "REAL_CONSTANT", "LETTER",
 			"MAIN", "ID"
 	};
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
 	public static final String _serializedATN =
 			"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2.\u0179\b\1\4\2\t" +
 					"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13" +
@@ -183,13 +178,18 @@ public class CmmLexer extends Lexer {
 	public static String[] channelNames = {
 			"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
 	public static String[] modeNames = {
 			"DEFAULT_MODE"
 	};
 
 	static {
-		RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION);
-	}
+		RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	static {
 		tokenNames = new String[_SYMBOLIC_NAMES.length];
@@ -205,12 +205,6 @@ public class CmmLexer extends Lexer {
 		}
 	}
 
-	static {
-		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
-		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
-			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
-		}
-	}
 
 	public CmmLexer(CharStream input) {
 		super(input);
@@ -229,33 +223,35 @@ public class CmmLexer extends Lexer {
 		return VOCABULARY;
 	}
 
+	static {
+		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
+		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
+			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
+		}
+	}
+
 	@Override
 	public String getGrammarFileName() {
-		return "Cmm.g4";
-	}
+		return "Cmm.g4"; }
 
 	@Override
 	public String[] getRuleNames() {
-		return ruleNames;
-	}
+		return ruleNames; }
 
 	@Override
 	public String getSerializedATN() {
-		return _serializedATN;
-	}
+		return _serializedATN; }
 
 	@Override
 	public String[] getChannelNames() {
-		return channelNames;
-	}
-
-	@Override
-	public String[] getModeNames() {
-		return modeNames;
-	}
+		return channelNames; }
 
 	@Override
 	public ATN getATN() {
 		return _ATN;
 	}
+
+	@Override
+	public String[] getModeNames() {
+		return modeNames; }
 }

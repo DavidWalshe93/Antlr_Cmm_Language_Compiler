@@ -1,9 +1,6 @@
 import ast.Program;
 import ast.definitions.FunctionDefinition;
 import ast.definitions.VariableDefinition;
-import introspector.model.IntrospectorModel;
-import introspector.view.IntrospectorTree;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,22 +23,22 @@ class Lab10 {
     private static Program ast;
     private static String testPath = "lab_10\\test.txt";
 
-    @AfterAll
-    static void afterAll() throws InterruptedException {
-        Program ast = Main_Lab_05.createAST(testPath);
-        ast = Main_Lab_05.runSemanticAnalysis(ast);
-	    ast = Main_Lab_05.runOffsetCodeGeneration(ast);
-
-        IntrospectorModel model = new IntrospectorModel("Program", ast);
-        new IntrospectorTree("Introspector", model, 800, 1000, 1, 8);
-        while (true) {
-            Thread.sleep(2000);
-        }
-    }
+//    @AfterAll
+//    static void afterAll() throws InterruptedException {
+//        Program ast = Main_Lab_05.createAST(testPath);
+//        ast = Main_Lab_05.runSemanticAnalysis(ast);
+//	    ast = Main_Lab_05.runOffsetCodeGeneration(ast);
+//
+//        IntrospectorModel model = new IntrospectorModel("Program", ast);
+//        new IntrospectorTree("Introspector", model, 800, 1000, 1, 8);
+//        while (true) {
+//            Thread.sleep(2000);
+//        }
+//    }
 
     @BeforeEach
     void setUp() {
-        ast = Main_Lab_05.createAST(testPath);
+	    ast = Main_Lab_05.createAST(testPath, true);
         ast = Main_Lab_05.runSemanticAnalysis(ast);
 	    ast = Main_Lab_05.runOffsetCodeGeneration(ast);
     }
@@ -80,9 +77,9 @@ class Lab10 {
 
     @ParameterizedTest(name = "Verifying f() local variable {0} has an offset of {1}")
     @CsvSource({
-            "0, -4",
-            "1, -6,",
-            "2, -7"
+		    "0, -4",  //-11
+		    "1, -6,", //-9
+		    "2, -7"   //-8
     })
     void fLocalOffsets(int index, int expected) {
         FunctionDefinition f = ((FunctionDefinition) ast.getDefinitions().get(CodeSegment.FUNC_F.getPositionCode()));
@@ -113,7 +110,7 @@ class Lab10 {
         assertEquals(expected, tempType.getParameters().get(index).getOffset());
     }
 
-    @ParameterizedTest(name = "Verifying temp() local variable {1}:{2} has an offset of {1}")
+	@ParameterizedTest(name = "Verifying temp() local variable {2} has an offset of {1}")
     @CsvSource({
             "0, -2, la",
             "1, -3, lb",

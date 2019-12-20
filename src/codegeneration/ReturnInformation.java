@@ -1,4 +1,6 @@
-package codegeneration.offset;
+package codegeneration;
+
+import types.Type;
 
 /**
  * Author: David Walshe
@@ -9,16 +11,25 @@ package codegeneration.offset;
  */
 
 
-public class ReturnBytes {
+public class ReturnInformation {
 
     private int localsByteSize = 0;
 	private int parametersByteSize = 0;
     private int returnByteSize = 0;
     private State state;
+	private Type returnType;
 
-    public ReturnBytes(State state) {
+	public ReturnInformation(State state) {
         this.state = state;
     }
+
+	public ReturnInformation(int returnByteSize, int localsByteSize, int parametersByteSize, Type returnType) {
+		this.returnByteSize = returnByteSize;
+		this.localsByteSize = localsByteSize;
+		this.parametersByteSize = parametersByteSize;
+		this.returnType = returnType;
+		this.state = State.LOCAL;
+	}
 
     public void addLocalByteSize(int value) {
         this.localsByteSize -= Math.abs(value);
@@ -51,6 +62,14 @@ public class ReturnBytes {
     public void setState(State state) {
         this.state = state;
     }
+
+	public Type getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(Type returnType) {
+		this.returnType = returnType;
+	}
 
     @Override
     public String toString() {

@@ -1,4 +1,4 @@
-package codegeneration.offset;
+package codegeneration;
 
 /**
  * Author: David Walshe
@@ -9,5 +9,5 @@ package codegeneration.offset;
  */
 
 public enum State {
-    PARAM, LOCAL
+	PARAM, LOCAL, GLOBAL
 }

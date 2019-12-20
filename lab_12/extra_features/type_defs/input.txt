@@ -1,0 +1,22 @@
+typedef int integer_type; // the new integer_type is defined
+type integer_type a; // the same as “int a;” (the type keyword facilitates the impl.)
+typedef int[10] vector;
+//type vector[20] w; // the same as int[10][20]
+
+typedef struct {
+int day;
+int month;
+int year;
+} date_type;
+type date_type myDate; // myDate is a global struct variable with three fields
+
+void main() {
+	type vector v;
+
+	v[0] = 10;
+
+	myDate.year = 2019;
+	myDate.month = 12;
+	myDate.day = 20;
+
+}

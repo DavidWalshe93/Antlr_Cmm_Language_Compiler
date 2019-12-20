@@ -33,6 +33,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
         }
 
         // Replaces user-defined types with their correlating primitive, array or struct type
+        variableDefinition.getType().accept(this, null);
         if (variableDefinition.getType() instanceof UserDefinedType) {
             variableDefinition.setType(symbolTable.find(((UserDefinedType) variableDefinition.getType()).getType()).getType());
         }

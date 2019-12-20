@@ -1,6 +1,7 @@
 
 #source	"input-2.txt"
 
+	' * Global variables
 	' * [8,[3,int]] fibonacci (offset 0)
 
 ' Invocation to the main function
@@ -9,26 +10,25 @@ halt
 
 
 #line	5
-
  p:
-	' * Parameters
-	' * Local variables
+	' * Parameters:
+	' * Local variables:
 	enter	0
 	ret	0, 0, 0
 
 #line	7
-
  f:
-	' * Parameters
-	' * real r (offset 6)
+	' * Parameters:
+	' * double r (offset 6)
 	' * int e (offset 4)
-	' * Local variables
-	' * real real (offset -4)
+	' * Local variables:
+	' * double real (offset -4)
 	' * char c (offset -5)
 	' * int result (offset -7)
 	enter	7
 
 #line	11
+	' * Assignment
 	push	bp
 	pushi	-4
 	addi
@@ -41,14 +41,16 @@ halt
 	storef
 
 #line	12
+	' * Assignment
 	push	bp
 	pushi	-5
 	addi
 	pushb	48
 	storeb
-	' * If statement
 
 #line	13
+	' * If Statement
+	' * If Conditional
 	push	bp
 	pushi	4
 	addi
@@ -56,9 +58,10 @@ halt
 	pushi	256
 	lti
 	jz	label0
-	' * Body of the if branch
+	' * If Body
 
 #line	14
+	' * Assignment
 	push	bp
 	pushi	-5
 	addi
@@ -70,6 +73,7 @@ halt
 	storeb
 
 #line	15
+	' * Assignment
 	push	bp
 	pushi	-7
 	addi
@@ -81,9 +85,12 @@ halt
 	storei
 	jmp	label1
  label0:
-	' * Body of the else branch
 
 #line	18
+	' * Else Body
+
+#line	18
+	' * Assignment
 	push	bp
 	pushi	-7
 	addi
@@ -104,14 +111,14 @@ halt
 	ret	2, 7, 6
 
 #line	22
-
  initialize:
-	' * Parameters
-	' * Local variables
+	' * Parameters:
+	' * Local variables:
 	' * int i (offset -2)
 	enter	2
 
 #line	24
+	' * Assignment
 	pusha	0
 	pushi	0
 	pushi	6
@@ -125,6 +132,7 @@ halt
 	storei
 
 #line	25
+	' * Assignment
 	pusha	0
 	pushi	0
 	pushi	6
@@ -138,6 +146,7 @@ halt
 	storei
 
 #line	26
+	' * Assignment
 	pusha	0
 	pushi	0
 	pushi	6
@@ -151,15 +160,17 @@ halt
 	storei
 
 #line	27
+	' * Assignment
 	push	bp
 	pushi	-2
 	addi
 	pushi	1
 	storei
-	' * While
 
 #line	28
+	' * While Loop
  label2:
+	' * While Conditional
 	push	bp
 	pushi	-2
 	addi
@@ -167,9 +178,10 @@ halt
 	pushi	8
 	lti
 	jz	label3
-	' * Body of the while statement
+	' * While Body
 
 #line	29
+	' * Assignment
 	pusha	0
 	push	bp
 	pushi	-2
@@ -200,6 +212,7 @@ halt
 	storei
 
 #line	30
+	' * Assignment
 	pusha	0
 	push	bp
 	pushi	-2
@@ -230,6 +243,7 @@ halt
 	storei
 
 #line	31
+	' * Assignment
 	pusha	0
 	push	bp
 	pushi	-2
@@ -272,6 +286,7 @@ halt
 	storei
 
 #line	32
+	' * Assignment
 	push	bp
 	pushi	-2
 	addi
@@ -287,10 +302,9 @@ halt
 	ret	0, 2, 0
 
 #line	37
-
  main:
-	' * Parameters
-	' * Local variables
+	' * Parameters:
+	' * Local variables:
 	' * int i (offset -2)
 	' * int j (offset -4)
 	' * char ch (offset -5)
@@ -300,6 +314,7 @@ halt
 	call	p
 
 #line	42
+	' * Assignment
 	push	bp
 	pushi	-2
 	addi
@@ -307,6 +322,7 @@ halt
 	storei
 
 #line	43
+	' * Assignment
 	push	bp
 	pushi	-5
 	addi
@@ -343,15 +359,17 @@ halt
 	call	initialize
 
 #line	52
+	' * Assignment
 	push	bp
 	pushi	-2
 	addi
 	pushi	0
 	storei
-	' * While
 
 #line	53
+	' * While Loop
  label4:
+	' * While Conditional
 	push	bp
 	pushi	-2
 	addi
@@ -359,7 +377,7 @@ halt
 	pushi	8
 	lti
 	jz	label5
-	' * Body of the while statement
+	' * While Body
 
 #line	55
 	' * Write
@@ -448,6 +466,7 @@ halt
 	outb
 
 #line	64
+	' * Assignment
 	push	bp
 	pushi	-2
 	addi

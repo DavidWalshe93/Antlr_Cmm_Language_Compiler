@@ -1,0 +1,45 @@
+// * Global variables
+int gi;
+double gd;
+char gc;
+int[3][3] ga;
+typedef double[2][2][2] gt;
+struct {
+	int a;
+	double b;
+	char c;
+} record;
+
+// * Main program
+void main() {
+	double ld;
+	int li;
+	char lc;
+	type record r;
+
+	ld = 0.0;
+	li = 0;
+	lc = '0';
+
+	gi = 3 + li;
+	gc = lc;
+	gd = ld * 3.8;
+	ga[0][0] = 10;
+	ga[1][1] = 10;
+	ga[2][2] = 10;
+	r.a = 10;
+	r.b = 5.0;
+	r.c = 'a';
+
+
+	write gi, gc, gd;
+	write ld, li, lc;
+	write ga[0][0], ga[1][1], ga[2][2];
+	write r.a, r.b, r.c;
+
+	read gi, gc, gd;
+	read ld, li, lc;
+	read ga[0][2], ga[1][0], ga[2][0];
+	read r.a, r.b, r.c;
+
+}
